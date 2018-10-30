@@ -55,6 +55,12 @@ body {
 .clearfix {
   *zoom: 1
 }
+.float-l {
+  float: left;
+}
+.float-r {
+  float: right;
+}
 html, body{
   width: 100%;
   height: 100%;
