@@ -5,12 +5,8 @@
       <span class="nav-logo">logo is here</span>
     </div>
     <div class="nav-middle">
-      <ul class="nav-list" @click="jump">
-        <li class="active" key="home">综合查询</li>
-        <li key="calculate">统计分析</li>
-        <li key="control">智能管控</li>
-        <li key="correct">修正数据</li>
-        <li key="help">帮助文档</li>
+      <ul class="nav-list" @click="jump" >
+        <li v-for="(item,index) in classfication" :data-index="index" :key="index" :class="{ active: item.actived}">{{ item.name }}</li>
       </ul>
     </div>
   </div>
@@ -21,11 +17,43 @@ export default {
   name: 'navgationTop',
   data() {
     return {
-      activeIndex: '1'
+      activeIndex: '1',
+      classfication: [
+        {
+          actived: true,
+          name: '综合查询',
+          routeName: 'home'
+        },
+        {
+          actived: false,
+          name: '统计分析',
+          routeName: 'analysis'
+        }, {
+          actived: false,
+          name: '智能管控',
+          routeName: 'control'
+        }, {
+          actived: false,
+          name: '修正数据',
+          routeName: 'correction'
+        }, {
+          actived: false,
+          name: '帮助文档',
+          routeName: 'helpdoc'
+        }
+      ]
     }
   },
   methods: {
     jump(e) {
+      // console.log(e.target.dataset.index)
+      this.classfication.forEach((item, index) => {
+        item.actived = false
+        if (Number(index) === Number(e.target.dataset.index)) {
+          item.actived = true
+          this.$router.push(item.routeName)
+        }
+      })
     }
   }
 }
