@@ -5,7 +5,7 @@
       <span class="nav-logo">logo is here</span>
     </div>
     <div class="nav-middle">
-      <ul class="nav-list" @click="jump" >
+      <ul class="nav-list clearfix" @click="jump" >
         <li v-for="(item,index) in classfication" :data-index="index" :key="index" :class="{ active: item.actived}">{{ item.name }}</li>
       </ul>
     </div>
@@ -76,12 +76,15 @@ export default {
   display: inline-block;
   margin-right: 100px;
 }
+.nav-list {
+  margin-left: 400px;
+  width: 50%;
+  min-width: 400px;
+}
 .nav-list li {
-  display: inline-block;
+  float: left;
   position: relative;
-  width: 70px;
-  height: 100%;
-  margin: 0 15px;
+  width: 15%;
   text-align: center;
 }
 .nav-list li:hover {
@@ -94,7 +97,9 @@ export default {
 .nav-list li.active::before {
   content: "";
   position: absolute;
-  width: 70px;
+  margin: 0 50%;
+  transform: translateX(-50%);
+  width: 70%;
   height: 2px;
   background-color: #ffd04b;
   top: 48px;

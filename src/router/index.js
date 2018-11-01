@@ -5,6 +5,7 @@ import Analysis from '@/pages/Analysis'
 import Control from '@/pages/Control'
 import Correction from '@/pages/Correction'
 import Helpdoc from '@/pages/Helpdoc.vue'
+import test from '@/pages/test'
 
 Vue.use(Router)
 
@@ -38,6 +39,11 @@ export default new Router({
       path: '/helpdoc',
       name: 'Helpdoc',
       component: Helpdoc
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: test
     }
   ]
 })
