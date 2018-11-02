@@ -35,7 +35,6 @@ export default {
   font-size: 20px;
 }
 .title span {
-  letter-spacing: 2px;
   margin-left: 10px;
   font-size: 1.2em;
 }

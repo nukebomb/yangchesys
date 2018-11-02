@@ -3,13 +3,13 @@
     <div class="left-container">
       <div class="search-bar" :class="{actived: showSearch}">
         <location-search></location-search>
-        <div class="arrow" :class="{actived: showSearch}" @click="toggleSearchBar">
-          <i class="iconfront-yc icon-yc-jiantou4"></i>
-        </div>
       </div>
-      <div class="middle-container">
+      <div class="middle-container" :class="{actived: showSearch}">
         <div class="map-container"></div>
         <div class="graph-container"></div>
+      </div>
+      <div class="arrow" :class="{actived: showSearch}" @click="toggleSearchBar">
+        <i class="iconfront-yc icon-yc-jiantou4"></i>
       </div>
     </div>
     <div class="right-container"></div>
@@ -48,8 +48,6 @@ export default {
   width: 100%;
   flex-grow: 2;
   overflow: hidden;
-  display: flex;
-  flex-wrap: nowrap;
   position: relative;
 }
 .right-container {
@@ -58,25 +56,31 @@ export default {
   background-color: teal;
 }
 /*
-* 动画有问题
+* debug tansition done
 */
 .search-bar {
+  position: absolute;
   width: 300px;
   height: 100%;
-  position: relative;
-  transition: left 0.6s ease-in;
+  left: 0px;
+  transition: transfrom 1s ease-in;
 }
 .search-bar.actived {
-  position: absolute;
   left: -300px;
 }
 .middle-container {
   background-color: violet;
-  flex-grow: 2;
+  position: absolute;
+  left: 300px;
+  right: 0px;
   height: 100%;
   z-index: 100;
   display: flex;
   flex-direction: column;
+  transition: left 0.4s ease;
+}
+.middle-container.actived {
+  left: 0px;
 }
 .map-container {
   flex-grow: 2;
@@ -88,18 +92,25 @@ export default {
 }
 .arrow {
   position: absolute;
-  right: 10px;
+  left: 270px;
   top: 50%;
   cursor: pointer;
-  transform: translateY(-50%);
+  z-index: 1000;
+  text-shadow: 1px 1px 6px rgba(100, 100, 100, 0.8);
+}
+.arrow:hover {
+  transform: translateY(-2px);
+  text-shadow: 1px 2px 10px rgba(100, 100, 100, 0.7);
 }
 .arrow i {
     font-size: 30px;
 }
+.arrow {
+  transition:  all 0.3s ease-in
+}
 .arrow.actived {
-  transform: rotate(180deg);
-  right: -40px;
-  transition: all 0.4s ease-in;
+  transform: rotateZ(180deg);
+  left: 10px;
   z-index: 1000;
 }
 </style>
