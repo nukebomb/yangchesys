@@ -5,19 +5,30 @@
         <location-search></location-search>
       </div>
       <div class="middle-container" :class="{actived: showSearch}">
-        <div class="map-container"></div>
-        <div class="graph-container"></div>
+        <div class="map-container">
+          <map-area></map-area>
+        </div>
+        <div class="graph-container">
+          <line-charts></line-charts>
+        </div>
       </div>
       <div class="arrow" :class="{actived: showSearch}" @click="toggleSearchBar">
         <i class="iconfront-yc icon-yc-jiantou4"></i>
       </div>
     </div>
-    <div class="right-container"></div>
+    <div class="right-container">
+      <div class="range-table">
+        <rank-table></rank-table>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import locationSearch from '../components/locationSearch'
+import mapArea from '../components/mapArea'
+import lineCharts from '../components/lineCharts'
+import rankTable from '../components/rankTable'
 export default {
   name: 'Home',
   data() {
@@ -26,7 +37,10 @@ export default {
     }
   },
   components: {
-    locationSearch
+    locationSearch,
+    mapArea,
+    lineCharts,
+    rankTable
   },
   methods: {
     toggleSearchBar() {
@@ -53,7 +67,11 @@ export default {
 .right-container {
   width: 300px;
   height: 100%;
-  background-color: teal;
+}
+.range-table {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
 }
 /*
 * debug tansition done
@@ -69,7 +87,6 @@ export default {
   left: -300px;
 }
 .middle-container {
-  background-color: violet;
   position: absolute;
   left: 300px;
   right: 0px;
@@ -84,10 +101,9 @@ export default {
 }
 .map-container {
   flex-grow: 2;
-  background-color: thistle;
+  height: calc(100% - 200px);
 }
 .graph-container {
-  background-color: silver;
   height: 200px;
 }
 .arrow {
@@ -103,10 +119,10 @@ export default {
   text-shadow: 1px 2px 10px rgba(100, 100, 100, 0.7);
 }
 .arrow i {
-    font-size: 30px;
+  font-size: 30px;
 }
 .arrow {
-  transition:  all 0.3s ease-in
+  transition: all 0.3s ease-in;
 }
 .arrow.actived {
   transform: rotateZ(180deg);

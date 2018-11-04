@@ -1,21 +1,25 @@
 <template>
-  <div>
-    <location-search></location-search>
+  <div class="container">
+    <rank-table></rank-table>
   </div>
 </template>
 
 <script>
-import locationSearch from '../components/locationSearch'
+import rankTable from '../components/rankTable'
 export default {
   name: 'test',
   data() {
     return {}
   },
   components: {
-    locationSearch
+    rankTable
   }
 }
 </script>
 
 <style>
+.container{
+  width: 100%;
+  height: calc(100% - 50px);
+}
 </style>
