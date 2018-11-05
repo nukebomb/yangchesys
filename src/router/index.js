@@ -7,6 +7,7 @@ import Correction from '@/pages/Correction'
 import Helpdoc from '@/pages/Helpdoc.vue'
 import test from '@/pages/test'
 import csstest from '@/pages/csstest'
+import CompreSearch from '@/pages/compreSearch'
 
 Vue.use(Router)
 
@@ -20,6 +21,11 @@ export default new Router({
       path: '/home',
       name: 'Home',
       component: Home
+    },
+    {
+      path: '/compresearch',
+      name: 'CompreSearch',
+      component: CompreSearch
     },
     {
       path: '/analysis',

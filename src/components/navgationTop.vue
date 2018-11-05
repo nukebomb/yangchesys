@@ -21,8 +21,13 @@ export default {
       classfication: [
         {
           actived: true,
-          name: '综合查询',
+          name: '首页',
           routeName: 'home'
+        },
+        {
+          actived: false,
+          name: '综合查询',
+          routeName: 'compresearch'
         },
         {
           actived: false,
