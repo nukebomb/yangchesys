@@ -1,15 +1,13 @@
 <template>
-  <div>correction</div>
+  <div>zonemangement</div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-    }
-  }
+  name: 'ZoneMange'
 }
 </script>
 
 <style>
+
 </style>

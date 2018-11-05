@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <navgation-top></navgation-top>
-    <router-view/>
+    <keep-alive>
+      <router-view/>
+    </keep-alive>
   </div>
 </template>
 
@@ -11,6 +13,9 @@ export default {
   name: 'App',
   components: {
     navgationTop
+  },
+  mounted() {
+    console.log(this.$router.currentRoute)
   }
 }
 </script>

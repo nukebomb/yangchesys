@@ -1,13 +1,25 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/pages/Home'
-import Analysis from '@/pages/Analysis'
-import Control from '@/pages/Control'
-import Correction from '@/pages/Correction'
-import Helpdoc from '@/pages/Helpdoc.vue'
-import test from '@/pages/test'
-import csstest from '@/pages/csstest'
-import CompreSearch from '@/pages/compreSearch'
+const Home = () =>
+  import('@/pages/Home')
+const Analysis = () =>
+  import('@/pages/Analysis')
+const Control = () =>
+  import('@/pages/Control')
+const Correction = () =>
+  import('@/pages/Correction')
+const Helpdoc = () =>
+  import('@/pages/Helpdoc')
+// const test = () =>
+//   import('@/pages/test')
+// const csstest = () =>
+//   import('@/pages/csstest')
+const CompreSearch = () =>
+  import('@/pages/search/compreSearch')
+const HistoryData = () =>
+  import('@/pages/search/HistoryData')
+const ZoneManage = () =>
+  import('@/pages/search/ZoneManage')
 
 Vue.use(Router)
 
@@ -19,43 +31,47 @@ export default new Router({
     },
     {
       path: '/home',
-      name: 'Home',
+      name: '首页',
       component: Home
     },
     {
       path: '/compresearch',
-      name: 'CompreSearch',
-      component: CompreSearch
+      name: '综合查询',
+      component: CompreSearch,
+      children: [
+        { path: 'history', component: HistoryData },
+        { path: 'zonemanage', component: ZoneManage }
+      ]
     },
     {
       path: '/analysis',
-      name: 'Analysis',
+      name: '统计分析',
       component: Analysis
     },
     {
       path: '/control',
-      name: 'Control',
+      name: '智能管控',
       component: Control
     },
     {
       path: '/correction',
-      name: 'Correction',
+      name: '修正数据',
       component: Correction
     },
     {
       path: '/helpdoc',
-      name: 'Helpdoc',
+      name: '帮助文档',
       component: Helpdoc
-    },
-    {
-      path: '/test',
-      name: 'test',
-      component: test
-    },
-    {
-      path: '/csstest',
-      name: 'csstest',
-      component: csstest
     }
+    // {
+    //   path: '/test',
+    //   name: 'test',
+    //   component: test
+    // },
+    // {
+    //   path: '/csstest',
+    //   name: 'csstest',
+    //   component: csstest
+    // }
   ]
 })

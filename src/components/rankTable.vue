@@ -44,7 +44,7 @@ export default {
         case '1级': result = 'level1-row'
           break
       }
-      console.log(result)
+      // console.log(result)
       return result
     }
   }

@@ -1,10 +1,10 @@
 <template>
-  <div>compreSearch</div>
+  <div>history</div>
 </template>
 
 <script>
 export default {
-  name: 'CompreSearch'
+  name: 'HistoryData'
 }
 </script>
 

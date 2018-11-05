@@ -30,7 +30,6 @@ import mapArea from '../components/mapArea'
 import lineCharts from '../components/lineCharts'
 import rankTable from '../components/rankTable'
 export default {
-  name: 'Home',
   data() {
     return {
       showSearch: false
@@ -64,14 +63,17 @@ export default {
   overflow: hidden;
   position: relative;
 }
+/* }组件的高度和父元素的关系？ */
+
 .right-container {
   width: 300px;
-  height: 100%;
+  height: calc(100% - 40px);
 }
 .range-table {
   width: 100%;
   height: 100%;
   padding: 10px;
+  padding: 20px 10px;
 }
 /*
 * debug tansition done
@@ -82,6 +84,7 @@ export default {
   height: 100%;
   left: 0px;
   transition: transfrom 1s ease-in;
+  padding: 20px 10px;
 }
 .search-bar.actived {
   left: -300px;
