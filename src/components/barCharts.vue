@@ -1,5 +1,5 @@
 <template>
-  <div id="linemain"></div>
+  <div id="barmain"></div>
 </template>
 
 <script>
@@ -10,7 +10,7 @@ export default {
     }
   },
   mounted() {
-    var linechart = this.echarts.init(document.getElementById('linemain'))
+    var linechart = this.echarts.init(document.getElementById('barmain'))
     linechart.setOption({
       xAxis: {
         type: 'category',
@@ -29,7 +29,7 @@ export default {
 </script>
 
 <style>
-#linemain {
+#barmain {
   width: 100%;
   height: 100%;
 }

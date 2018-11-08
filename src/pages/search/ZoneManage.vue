@@ -97,7 +97,7 @@ export default {
   padding: 0 20px;
 }
 .submitspot{
-  margin-top: 60px;
+  margin-top: 20px;
 }
 .title {
   width: 100%;
