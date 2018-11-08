@@ -15,7 +15,7 @@ export default {
     navgationTop
   },
   mounted() {
-    console.log(this.$router.currentRoute)
+    // console.log(this.$router.currentRoute)
   }
 }
 </script>
