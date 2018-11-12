@@ -10,8 +10,8 @@ const Correction = () =>
   import('@/pages/Correction')
 const Helpdoc = () =>
   import('@/pages/Helpdoc')
-// const test = () =>
-//   import('@/pages/test')
+const test = () =>
+  import('@/pages/test')
 // const csstest = () =>
 //   import('@/pages/csstest')
 const CompreSearch = () =>
@@ -62,12 +62,12 @@ export default new Router({
       path: '/helpdoc',
       name: '帮助文档',
       component: Helpdoc
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: test
     }
-    // {
-    //   path: '/test',
-    //   name: 'test',
-    //   component: test
-    // },
     // {
     //   path: '/csstest',
     //   name: 'csstest',
