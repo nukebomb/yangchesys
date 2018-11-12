@@ -6,6 +6,7 @@
     <all-predict></all-predict>
     <week-predict></week-predict>
     <contribution-session></contribution-session>
+    <contribution-day></contribution-day>
     <div id="temppostion"></div>
   </div>
 </template>
@@ -17,6 +18,7 @@ import historyDate from '../components/charts/historyDate'
 import allPredict from '../components/charts/allpredict'
 import weekPredict from '../components/charts/weekPredict'
 import contributionSession from '../components/charts/contributionSession'
+import contributionDay from '../components/charts/contributionDay'
 
 export default {
   name: 'test',
@@ -29,7 +31,8 @@ export default {
     historyDate,
     allPredict,
     weekPredict,
-    contributionSession
+    contributionSession,
+    contributionDay
   }
 }
 </script>
