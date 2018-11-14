@@ -11,12 +11,15 @@ export default {
   data() {
     return {
       needbackoff: false,
-      initdata: null
+      initdata: null,
+      selectedList: {
+        '成华区': false, '高新区': false, '双流区': false, '金牛区': false, '武侯区': false, '天府新区': false, '青羊区': false, '全市': true
+      }
     }
   },
   mounted() {
     // var allLieChart = this.echarts.init(document.getElementById('allInOne'))
-    Axios.get('http://localhost:8080/static/json/year.json').then((data) => {
+    Axios.get('http://localhost:3000/home/years').then((data) => {
       this.grapmaker(data.data)
       this.initdata = data.data
     })
@@ -26,28 +29,38 @@ export default {
       this.grapmaker(this.initdata)
       this.needbackoff = false
     },
-    grapmaker(data) {
+    grapmaker(data, whichYear = null) {
       var allLieChart = this.echarts.init(document.getElementById('allInOne'))
       if (data.name === 'byyear') {
         allLieChart.on('click', (para) => {
-          console.log(para.name)
-          Axios.get('http://localhost:8080/static/json/month.json').then(data => {
-            this.grapmaker(data.data)
-            this.needbackoff = true
-          })
+          if (!isNaN(para.name)) {
+            Axios.get('http://localhost:3000/home/month/' + para.name).then(data => {
+              this.grapmaker(data.data, data.data.year + '年度')
+              this.needbackoff = true
+            })
+          }
         })
       }
+      allLieChart.on('legendselectchanged', para => {
+        this.selectedList[para.name] = !this.selectedList[para.name]
+      })
       const option = {
         title: {
           text: '区域扬尘变化趋势',
-          padding: [10, 20]
+          padding: [5, 20],
+          subtext: whichYear,
+          subtextStyle: {
+            color: 'rgba(0,0,0,0.8)',
+            fontWeight: 'normal'
+          }
         },
         tooltip: {
           trigger: 'axis'
         },
         legend: {
           data: ['成华区', '高新区', '双流区', '金牛区', '武侯区', '天府新区', '青羊区', '全市'],
-          type: 'scroll'
+          type: 'scroll',
+          selected: this.selectedList
         },
         grid: {
           left: '3%',
@@ -87,7 +100,7 @@ export default {
           {
             name: '金牛区',
             type: 'line',
-            data: data.jingniuqu
+            data: data.jinniuqu
           },
           {
             name: '武侯区',
