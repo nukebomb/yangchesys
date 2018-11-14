@@ -124,7 +124,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #allInOne {
   width: 1000px;
   height: 400px;

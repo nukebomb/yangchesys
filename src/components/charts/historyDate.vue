@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="historyDate">
     <div class="bar-date-con">
       <el-form>
         <el-form-item class="zone-selector">
@@ -26,7 +26,8 @@ export default {
     return {
       zoneRadio: 'allchengdu',
       pickedDate: null,
-      historyGraph: null
+      historyGraph: null,
+      showedArea: null
     }
   },
   computed: {
@@ -38,7 +39,7 @@ export default {
   mounted() {
     this.historyGraph = this.echarts.init(document.getElementById('historyGraphcon'))
     Axios.get('http://localhost:8080/static/json/cdHistory.json').then((data) => {
-      // console.log(data.data.data)
+      console.log(data.data.data)
       var initData = data.data.data
       var dataCategory = []
       var dataValue = []
@@ -47,6 +48,18 @@ export default {
         dataValue.push(element.value)
       })
       const historyOption = {
+        title: {
+          text: '各区域扬尘历史数据',
+          padding: [5, 20],
+          subtext: '全市',
+          subtextStyle: {
+            color: 'rgba(0,0,0,0.8)',
+            fontWeight: 'normal'
+          }
+        },
+        tooltip: {
+          trigger: 'axis'
+        },
         xAxis: {
           type: 'category',
           // data: this.xAxisNamesCompute(this.endDate)
@@ -112,8 +125,8 @@ export default {
 }
 </script>
 
-<style>
-.bar-date-con {
+<style scoped>
+.historyDate {
   padding: 50px;
 }
 #historyGraphcon {
