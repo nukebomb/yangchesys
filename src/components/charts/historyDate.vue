@@ -39,16 +39,6 @@ export default {
   mounted() {
     this.historyGraph = this.echarts.init(document.getElementById('historyGraphcon'))
     Axios.get('http://localhost:3000/history/chengdu').then((data) => {
-      // console.log(data.data.data)
-      // console.log(data.data.category)
-      // var initData = data.data.data
-      // var dataCategory = []
-      // var dataValue = []
-      // initData.forEach(element => {
-      //   dataCategory.push(element.date)
-      //   dataValue.push(element.value)
-      // })
-      var dataLength = eval(data.data.data.length)
       const historyOption = {
         title: {
           text: '各区域扬尘历史数据',
@@ -71,7 +61,7 @@ export default {
             type: 'slider',
             show: true,
             start: 80,
-            end: 100,
+            end: 100
           },
           {
             type: 'inside',
@@ -99,32 +89,49 @@ export default {
   },
   methods: {
     submitHistory() {
-      console.log(this.pickedDate) //到此处了
-      Axios.get('http://localhost:3000/history/all/').then((data) => {
-        var particalData = data.data.data
-        var pardataCategory = []
-        var pardataValue = []
-        particalData.forEach(element => {
-          pardataCategory.push(element.date)
-          pardataValue.push(element.value)
-        })
+      switch (this.zoneRadio) {
+        case 'allchengdu':
+        console.log(this.pickedDate[0])
+          this.drawGraph(`http://localhost:3000/history/all/${this.pickedDate[0]}/${this.pickedDate[1]}`)
+          break
+        case 'particalArea':
+          this.drawGraph('http://localhost:3000/history/zones/' + this.pickedDate[0] + '/' + this.pickedDate[1])
+          break
+        case 'particalSpot':
+          this.drawGraph('http://localhost:3000/history/spots/' + this.pickedDate[0] + '/' + this.pickedDate[1])
+          break
+      }
+    },
+    drawGraph(url) {
+      Axios.get('url').then(data => {
         const historyOption = {
           xAxis: {
             type: 'category',
-            // data: this.xAxisNamesCompute(this.endDate)
-            data: pardataCategory
+            data: data.data.category
           },
+          dataZoom: [
+            {
+              type: 'slider',
+              show: true,
+              start: 0,
+              end: 100
+            },
+            {
+              type: 'inside',
+              start: 0,
+              end: 100
+            }
+          ],
           yAxis: {
             type: 'value'
           },
           series: [{
-            data: pardataValue,
+            data: data.data.data,
             type: 'bar'
           }]
         }
         this.historyGraph.setOption(historyOption)
-      }
-      )
+      })
     },
     xAxisNamesCompute(datestr) {
       let inputDate = new Date(datestr)
