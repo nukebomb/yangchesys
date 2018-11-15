@@ -91,8 +91,9 @@ export default {
     submitHistory() {
       switch (this.zoneRadio) {
         case 'allchengdu':
-        console.log(this.pickedDate[0])
+          // console.log(this.pickedDate[0])
           this.drawGraph(`http://localhost:3000/history/all/${this.pickedDate[0]}/${this.pickedDate[1]}`)
+          console.log(`http://localhost:3000/history/all/${this.pickedDate[0]}/${this.pickedDate[1]}`)
           break
         case 'particalArea':
           this.drawGraph('http://localhost:3000/history/zones/' + this.pickedDate[0] + '/' + this.pickedDate[1])
@@ -103,12 +104,60 @@ export default {
       }
     },
     drawGraph(url) {
-      Axios.get('url').then(data => {
+      Axios.get(url).then(data => {
+        var realseries = null
+        var realLegend = null
+        if (data.data.name === 'allcityByTime') {
+          realseries = [{
+            data: data.data.data,
+            type: 'bar'
+          }]
+        } else if (data.data.name === 'eachZones') {
+          realLegend = {
+            data: ['成华区', '高新区', '双流区', '金牛区', '武侯区', '青羊区'],
+            left: '30%'
+          }
+          realseries = [{
+            name: '成华区',
+            data: data.data.data.chenghua,
+            type: 'bar'
+          },
+          {
+            name: '高新区',
+            data: data.data.data.gaoxing,
+            type: 'bar'
+          },
+          {
+            name: '双流区',
+            data: data.data.data.shuangliu,
+            type: 'bar'
+          },
+          {
+            name: '金牛区',
+            data: data.data.data.jinniu,
+            type: 'bar'
+          },
+          {
+            name: '武侯区',
+            data: data.data.data.wuhou,
+            type: 'bar'
+          },
+          {
+            name: '青羊区',
+            data: data.data.data.qingyang,
+            type: 'bar'
+          }]
+        } else if (data.data.name === 'eachSpots') {
+          realseries = [{
+            // 逻辑还没确定
+          }]
+        }
         const historyOption = {
           xAxis: {
             type: 'category',
             data: data.data.category
           },
+          legend: realLegend,
           dataZoom: [
             {
               type: 'slider',
@@ -125,10 +174,7 @@ export default {
           yAxis: {
             type: 'value'
           },
-          series: [{
-            data: data.data.data,
-            type: 'bar'
-          }]
+          series: realseries
         }
         this.historyGraph.setOption(historyOption)
       })
