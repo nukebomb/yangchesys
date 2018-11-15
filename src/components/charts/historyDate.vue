@@ -38,15 +38,17 @@ export default {
   },
   mounted() {
     this.historyGraph = this.echarts.init(document.getElementById('historyGraphcon'))
-    Axios.get('http://localhost:8080/static/json/cdHistory.json').then((data) => {
-      console.log(data.data.data)
-      var initData = data.data.data
-      var dataCategory = []
-      var dataValue = []
-      initData.forEach(element => {
-        dataCategory.push(element.date)
-        dataValue.push(element.value)
-      })
+    Axios.get('http://localhost:3000/history/chengdu').then((data) => {
+      // console.log(data.data.data)
+      // console.log(data.data.category)
+      // var initData = data.data.data
+      // var dataCategory = []
+      // var dataValue = []
+      // initData.forEach(element => {
+      //   dataCategory.push(element.date)
+      //   dataValue.push(element.value)
+      // })
+      var dataLength = eval(data.data.data.length)
       const historyOption = {
         title: {
           text: '各区域扬尘历史数据',
@@ -57,19 +59,38 @@ export default {
             fontWeight: 'normal'
           }
         },
+        toolbox: {
+          feature: {
+            dataZoom: {
+              yAxisIndex: false
+            }
+          }
+        },
+        dataZoom: [
+          {
+            type: 'slider',
+            show: true,
+            start: 80,
+            end: 100,
+          },
+          {
+            type: 'inside',
+            start: 80,
+            end: 100
+          }
+        ],
         tooltip: {
           trigger: 'axis'
         },
         xAxis: {
           type: 'category',
-          // data: this.xAxisNamesCompute(this.endDate)
-          data: dataCategory
+          data: data.data.category
         },
         yAxis: {
           type: 'value'
         },
         series: [{
-          data: dataValue,
+          data: data.data.data,
           type: 'bar'
         }]
       }
@@ -78,8 +99,8 @@ export default {
   },
   methods: {
     submitHistory() {
-      // console.log(this.pickedDate)
-      Axios.get('http://localhost:8080/static/json/cdHistorymin.json').then((data) => {
+      console.log(this.pickedDate) //到此处了
+      Axios.get('http://localhost:3000/history/all/').then((data) => {
         var particalData = data.data.data
         var pardataCategory = []
         var pardataValue = []
