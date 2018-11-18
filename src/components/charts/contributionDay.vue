@@ -17,12 +17,15 @@ export default {
     }
   },
   mounted() {
+    var now = new Date()
+    var nowStr = this.dealDate(now)
     this.dayPieGraphObj = this.echarts.init(document.getElementById('contriGraphday'))
     this.grapOptionsInit = {
       title: {
         text: '随时间变化的影响因子',
         left: 'center',
-        top: 20
+        top: 20,
+        subtext: nowStr
       },
 
       tooltip: {
@@ -93,6 +96,7 @@ export default {
     changePieDay(pieRequest) {
       // 获取选取的时间点，发出请求，更新饼图
       const currentOption = JSON.parse(JSON.stringify(this.grapOptionsInit))
+      currentOption.title.subtext = this.dealDate(pieRequest)
       currentOption.series[0].data = [
         { value: Math.floor(Math.random() * 100) / 100, name: '成华区' },
         { value: Math.floor(Math.random() * 100) / 100, name: '双流区' },
@@ -103,6 +107,12 @@ export default {
         { value: Math.floor(Math.random() * 100) / 100, name: '天府新区' }
       ].sort(function (a, b) { return a.value - b.value })
       this.dayPieGraphObj.setOption(currentOption)
+    },
+    dealDate(date) {
+      return date.getFullYear() + '-' + this.addZero(date.getMonth() + 1) + '-' + this.addZero(date.getDate())
+    },
+    addZero(num) {
+      return num < 10 ? '0' + num : num
     }
   }
 }

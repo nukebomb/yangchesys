@@ -28,3 +28,5 @@ npm test
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+#### 介绍
+扬尘系统前端，默认启动在8080端口，目前图表组件的展示都放在了/test路由下

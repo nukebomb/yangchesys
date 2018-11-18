@@ -64,7 +64,8 @@ export default {
       title: {
         text: '随季节变化的影响因子',
         left: 'center',
-        top: 20
+        top: 20,
+        subtext: '2018/冬季'
       },
 
       tooltip: {
@@ -134,7 +135,9 @@ export default {
   methods: {
     changePieSession(pieRequest) {
       // 获取选取的时间点，发出请求，更新饼图
+      var session = this.formatSession(pieRequest[1])
       const currentOption = JSON.parse(JSON.stringify(this.grapOptionsInit))
+      currentOption.title.subtext = pieRequest[0] + '/' + session
       currentOption.series[0].data = [
         { value: Math.floor(Math.random() * 100) / 100, name: '成华区' },
         { value: Math.floor(Math.random() * 100) / 100, name: '双流区' },
@@ -145,6 +148,24 @@ export default {
         { value: Math.floor(Math.random() * 100) / 100, name: '天府新区' }
       ].sort(function (a, b) { return a.value - b.value })
       this.PieGraphObj.setOption(currentOption)
+    },
+    formatSession(str) {
+      var result = null
+      switch (str) {
+        case 'spring':
+          result = '春季'
+          break
+        case 'summer':
+          result = '夏季'
+          break
+        case 'atum':
+          result = '秋季'
+          break
+        case 'winter':
+          result = '冬季'
+          break
+      }
+      return result
     }
   }
 }
