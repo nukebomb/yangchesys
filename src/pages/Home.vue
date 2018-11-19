@@ -1,135 +1,129 @@
 <template>
-  <div class="home-page">
-    <div class="left-container">
-      <div class="search-bar" :class="{actived: showSearch}">
-        <location-search></location-search>
-      </div>
-      <div class="middle-container" :class="{actived: showSearch}">
-        <div class="map-container">
-          <map-area></map-area>
+  <div class="home-container">
+    <map-area></map-area>
+    <div id="rightside-graph">
+      <div class="top-form">
+        <div class="title">
+          <span class="crossline"></span>
+          <span class="subtitle">查询扬尘情况</span>
         </div>
-        <div class="graph-container">
-          <line-charts></line-charts>
+        <div class="inputs-section">
+          <el-cascader expand-trigger="hover" :options="researchOptions" v-model="selectedOptions"></el-cascader>
         </div>
       </div>
-      <div class="arrow" :class="{actived: showSearch}" @click="toggleSearchBar">
-        <i class="iconfront-yc icon-yc-jiantou4"></i>
-      </div>
-    </div>
-    <div class="right-container">
-      <div class="range-table">
-        <rank-table></rank-table>
-      </div>
+      <div class="bottom-graph"><line-charts></line-charts></div>
     </div>
   </div>
 </template>
 
 <script>
-import locationSearch from '../components/locationSearch'
 import mapArea from '../components/mapArea'
 import lineCharts from '../components/lineCharts'
 import rankTable from '../components/rankTable'
 export default {
-  data() {
-    return {
-      showSearch: false
-    }
-  },
   components: {
-    locationSearch,
     mapArea,
     lineCharts,
     rankTable
   },
-  methods: {
-    toggleSearchBar() {
-      this.showSearch = !this.showSearch
+  data() {
+    return {
+      selectedOptions: null,
+      researchOptions: [
+        {
+          value: 'allcity',
+          label: '全市'
+        },
+        {
+          value: 'zones',
+          label: '区域查询',
+          children: [
+            {
+              label: '成华区', value: 'chenghua'
+            }, {
+              label: '武侯区', value: 'wuhou'
+            }, {
+              label: '高新区', value: 'gaoxin'
+            }, {
+              label: '双流区', value: 'shuangliu'
+            }, {
+              label: '金牛区', value: 'jingniu'
+            }
+          ]
+        }, {
+          value: 'points',
+          label: '点位查询',
+          children: [
+            {
+              label: '0x123', value: '0x123'
+            }, {
+              label: '0x124', value: '0x123'
+            }, {
+              label: '0x153', value: '0x123'
+            }, {
+              label: '0x1x3', value: '0x123'
+            }, {
+              label: '0x1v3', value: '0x123'
+            }
+          ]
+        }
+      ]
     }
   }
 }
 </script>
 
 <style>
-.home-page {
-  width: 100%;
-  height: calc(100% - 50px);
-  display: flex;
-  flex-wrap: nowrap;
-}
-.left-container {
+.home-container {
   height: 100%;
   width: 100%;
-  flex-grow: 2;
-  overflow: hidden;
   position: relative;
 }
-/* }组件的高度和父元素的关系？ */
-
-.right-container {
-  width: 300px;
-  height: calc(100% - 40px);
+#rightside-graph {
+  width: 40%;
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 94%;
+  background-color: #545c64;
+  margin-top: 1.4%;
+  opacity: 0.8;
 }
-.range-table {
+/* 带横线标题 */
+.title {
   width: 100%;
-  height: 100%;
-  padding: 10px;
-  padding: 20px 10px;
+  position: relative;
+  height: 30px;
+  margin-bottom: 10px;
 }
-/*
-* debug tansition done
-*/
-.search-bar {
+.subtitle {
+  text-align: middle;
+  height: 30px;
+  line-height: 30px;
   position: absolute;
-  width: 300px;
-  height: 100%;
-  left: 0px;
-  transition: transfrom 1s ease-in;
-  padding: 20px 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  background-color: #545c64;
 }
-.search-bar.actived {
-  left: -300px;
-}
-.middle-container {
+.subtitle::before {
   position: absolute;
-  left: 300px;
-  right: 0px;
-  height: 100%;
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  transition: left 0.4s ease;
-}
-.middle-container.actived {
-  left: 0px;
-}
-.map-container {
-  flex-grow: 2;
-  height: calc(100% - 200px);
-}
-.graph-container {
-  height: 200px;
-}
-.arrow {
-  position: absolute;
-  left: 270px;
   top: 50%;
-  cursor: pointer;
-  z-index: 1000;
-  text-shadow: 1px 1px 6px rgba(100, 100, 100, 0.8);
+  content: "";
+  right: 100%;
+  width: 100px;
+  height: 1px;
+  background-color: #ddd;
+  margin-right: 10px;
 }
-.arrow:hover {
-  transform: translateY(-2px);
-  text-shadow: 1px 2px 10px rgba(100, 100, 100, 0.7);
-}
-.arrow i {
-  font-size: 30px;
-}
-.arrow {
-  transition: all 0.3s ease-in;
-}
-.arrow.actived {
-  transform: rotateZ(180deg);
-  left: 10px;
-  z-index: 1000;
+.subtitle::after {
+  position: absolute;
+  top: 50%;
+  content: "";
+  left: 100%;
+  width: 100px;
+  height: 1px;
+  background-color: #ddd;
+  margin-left: 10px;
 }
 </style>

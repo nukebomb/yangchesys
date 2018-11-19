@@ -7,7 +7,7 @@ export default {
   name: 'mapArea',
   mounted() {
     var map = new window.BMap.Map('allmap')
-    map.centerAndZoom('成都', 15)
+    map.centerAndZoom('成都', 13)
   }
 }
 </script>
