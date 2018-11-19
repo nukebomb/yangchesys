@@ -15,6 +15,6 @@ export default {
 <style>
 #allmap {
   width: 100%;
-  height: 100%;
+  height: calc(100% - 40px);
 }
 </style>

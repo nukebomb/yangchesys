@@ -1,6 +1,8 @@
 * {
   margin: 0;
-  padding: 0
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
 em, i {
@@ -55,12 +57,15 @@ body {
 .clearfix {
   *zoom: 1
 }
+
 .float-l {
   float: left;
 }
+
 .float-r {
   float: right;
 }
-html, body{
+
+html, body {
   height: 100%;
 }

@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-table :data="polutionRank" :row-class-name="tableRowClassName" size="mini" border>
-      <el-table-column label="点位名称" prop="name" width="70px"></el-table-column>
-      <el-table-column label="工程位置" prop="location" width="70px"></el-table-column>
-      <el-table-column label="污染等级" prop="level" width="70px"></el-table-column>
-      <el-table-column label="变化趋势" prop="trend" width="70px"></el-table-column>
+      <el-table-column label="点位名称" prop="name"></el-table-column>
+      <el-table-column label="工程位置" prop="location"></el-table-column>
+      <el-table-column label="污染等级" prop="level"></el-table-column>
+      <el-table-column label="变化趋势" prop="trend"></el-table-column>
     </el-table>
   </div>
 </template>
