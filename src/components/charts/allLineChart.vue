@@ -60,7 +60,8 @@ export default {
         legend: {
           data: ['成华区', '高新区', '双流区', '金牛区', '武侯区', '天府新区', '青羊区', '全市'],
           type: 'scroll',
-          selected: this.selectedList
+          selected: this.selectedList,
+          width: '350px'
         },
         grid: {
           left: '3%',
