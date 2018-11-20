@@ -16,12 +16,12 @@
       <el-container id="height-container">
         <el-aside class="leftside-nav" :width="navWidth">
           <div id="hideNavBtn" @click="toggleCollapse" :class="{collapesd: isCollapse}"><i class="iconfront-yc icon-yc-gengduo"></i></div>
-          <el-menu class="leftside-nav-menu" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" default-active="1" :collapse="isCollapse" :router="true">
+          <el-menu class="leftside-nav-menu" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" default-active="/home" :collapse="isCollapse" :router="true">
             <el-menu-item index="/home">
               <i class="iconfront-yc icon-yc-shouye"></i>
               <span>首页&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
             </el-menu-item>
-            <el-menu-item index="/compresearch">
+            <el-menu-item index="/historysearch">
               <i class="iconfront-yc icon-yc-chaxun"></i>
               <span>综合查询</span>
             </el-menu-item>

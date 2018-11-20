@@ -14,12 +14,12 @@ const test = () =>
   import('@/pages/test')
 // const csstest = () =>
 //   import('@/pages/csstest')
-const CompreSearch = () =>
-  import('@/pages/search/compreSearch')
-const HistoryData = () =>
-  import('@/pages/search/HistoryData')
-const ZoneManage = () =>
-  import('@/pages/search/ZoneManage')
+const HistorySearch = () =>
+  import('@/pages/HistorySearch')
+// const HistoryData = () =>
+//   import('@/pages/search/HistoryData')
+// const ZoneManage = () =>
+//   import('@/pages/search/ZoneManage')
 
 Vue.use(Router)
 
@@ -35,13 +35,9 @@ export default new Router({
       component: Home
     },
     {
-      path: '/compresearch',
+      path: '/historysearch',
       name: '综合查询',
-      component: CompreSearch,
-      children: [
-        { path: 'history', component: HistoryData },
-        { path: 'zonemanage', component: ZoneManage }
-      ]
+      component: HistorySearch
     },
     {
       path: '/analysis',
