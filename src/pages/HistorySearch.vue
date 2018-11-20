@@ -101,12 +101,14 @@ export default {
   width: 50%;
   margin: 20px;
   border: 1px solid rgba(192, 191, 191, 0.3);
+  background-color: #fff;
 }
 .history-right-container {
   width: 50%;
   margin: 20px 20px 20px 0;
   border: 1px solid rgba(192, 191, 191, 0.3);
-  padding: 20px;
+  padding: 0 20px 20px 20px;
+  background-color: #fff;
 }
 
 /* 带横线标题 */
@@ -114,7 +116,7 @@ export default {
   width: 100%;
   position: relative;
   height: 30px;
-  margin-bottom: 10px;
+  margin: 10px 0px;
 }
 .history-subtitle {
   text-align: middle;
@@ -159,7 +161,7 @@ export default {
 .history-left-top-container {
 }
 .history-map-left {
-  height: calc(100% - 20px);
+  height: calc(100% - 30px);
   width: 100%;
 }
 </style>
