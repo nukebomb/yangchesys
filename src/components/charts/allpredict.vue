@@ -118,15 +118,17 @@ export default {
 
 <style>
 #predictLineSession {
-  width: 1000px;
-  height: 600px;
+  width: 100%;
+  height: 100%;
 }
 .predictGraph {
   position: relative;
+  width: 100%;
+  height: 100%;
 }
 .backoff-btn {
   position: absolute;
   top: 10px;
-  right: 20px;
+  left: 20px;
 }
 </style>

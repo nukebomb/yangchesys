@@ -1,16 +1,9 @@
 <template>
   <div id="weekPredict">
     <div>
-      <el-form>
-        <el-form-item>
-          <el-select v-model="rangeSeleted">
-            <el-option v-for="(item, index) in seletorRange" :key="index" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" size="mini" @click="submitPredictRange">查询</el-button>
-        </el-form-item>
-      </el-form>
+      <el-select size="mini" v-model="rangeSeleted"  @change="submitPredictRange">
+        <el-option  v-for="(item, index) in seletorRange" :key="index" :label="item.label" :value="item.value"></el-option>
+      </el-select>
     </div>
     <div id="weekPredictCon">
     </div>
@@ -30,7 +23,8 @@ export default {
     this.weekPredictGraph = this.echarts.init(document.getElementById('weekPredictCon'))
   },
   methods: {
-    submitPredictRange() {
+    submitPredictRange(selected) {
+      //console.log(selected)
       let range = this.rangeSeleted
       let dateNow = new Date()
       let rangeNum = range === 'oneweek' ? 7 : 14
@@ -67,8 +61,12 @@ export default {
 </script>
 
 <style>
+#weekPredict {
+  width: 100%;
+  height: 100%;
+}
 #weekPredictCon {
-  width: 1000px;
-  height: 600px;
+  width: 100%;
+  height: 100%;
 }
 </style>
