@@ -4,14 +4,12 @@
       <div class="home-leftside-inner">
         <div class="home-maptop">
           <div class="title">
-            <span class="crossline"></span>
             <span class="subtitle">监测点位置信息</span>
           </div>
         <map-area></map-area>
       </div>
       <div class="home-rankbottom">
         <div class="title">
-          <span class="crossline"></span>
           <span class="subtitle">监测点污染等级</span>
         </div>
         <rank-table></rank-table>
@@ -21,7 +19,6 @@
     <div id="rightside-graph">
       <div class="top-form">
         <div class="title">
-          <span class="crossline"></span>
           <span class="subtitle">查询扬尘情况</span>
         </div>
         <div class="inputs-section">
@@ -38,7 +35,6 @@
       </div>
       <div class="bottom-graph">
         <div class="title">
-          <span class="crossline"></span>
           <span class="subtitle">区域扬尘变化趋势</span>
         </div>
         <div class="home-charts-container">

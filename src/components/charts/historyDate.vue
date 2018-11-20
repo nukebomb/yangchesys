@@ -1,21 +1,6 @@
 <template>
   <div class="historyDate">
-    <div class="bar-date-con">
-      <el-form>
-        <el-form-item class="zone-selector">
-          <el-radio v-model="zoneRadio" label="allchengdu">全成都</el-radio>
-          <el-radio v-model="zoneRadio" label="particalArea">区域数据</el-radio>
-          <el-radio v-model="zoneRadio" label="particalSpot">点位数据</el-radio>
-        </el-form-item>
-        <el-form-item required class="date-picker">
-          <el-date-picker v-model="pickedDate" type="daterange" range-separator="至"></el-date-picker>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="submitHistory">查询</el-button>
-        </el-form-item>
-      </el-form>
-      <div id="historyGraphcon"></div>
-    </div>
+    <div id="historyGraphcon"></div>
   </div>
 </template>
 
@@ -199,12 +184,13 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .historyDate {
-  padding: 50px;
+  width: 100%;
+  height: 100%;
 }
 #historyGraphcon {
-  width: 800px;
-  height: 600px;
+  width: 100%;
+  height: 100%;
 }
 </style>
