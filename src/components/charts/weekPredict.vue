@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     submitPredictRange(selected) {
-      //console.log(selected)
+      
       let range = this.rangeSeleted
       let dateNow = new Date()
       let rangeNum = range === 'oneweek' ? 7 : 14
