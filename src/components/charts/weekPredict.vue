@@ -1,6 +1,6 @@
 <template>
   <div id="weekPredict">
-    <div>
+    <div class="weekpredict-date-selector">
       <el-select size="mini" v-model="rangeSeleted"  @change="submitPredictRange">
         <el-option  v-for="(item, index) in seletorRange" :key="index" :label="item.label" :value="item.value"></el-option>
       </el-select>
@@ -67,6 +67,9 @@ export default {
 }
 #weekPredictCon {
   width: 100%;
-  height: 100%;
+  height: calc(100% - 40px);
+}
+.weekpredict-date-selector {
+  height: 40px;
 }
 </style>

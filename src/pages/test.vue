@@ -43,6 +43,7 @@ export default {
 <style>
 .container {
   width: 100%;
+  height: 1000px;
 }
 #temppostion {
   width: 100px;

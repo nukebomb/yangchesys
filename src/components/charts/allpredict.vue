@@ -22,8 +22,7 @@ export default {
       console.log(currentData)
       this.sessionOption = {
         title: {
-          text: '全市随季节变化趋势预测',
-          padding: [40]
+          text: '全市随季节变化趋势预测'
         },
         color: ['#003366', '#006699', '#4cabce', '#e5323e'],
         tooltip: {
@@ -33,7 +32,9 @@ export default {
           }
         },
         legend: {
-          data: ['春季', '夏季', '秋季', '冬季']
+          // data: ['春季', '夏季', '秋季', '冬季'],
+          data: ['Growth', 'Budget 2011', 'Budget 2012'],
+          width: '300px'
         },
         xAxis: [
           {

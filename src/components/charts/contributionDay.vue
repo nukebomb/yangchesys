@@ -13,7 +13,7 @@ export default {
     return {
       dayPieGraphObj: null,
       grapOptionsInit: null,
-      daySelect: null
+      daySelect: this.dealDate(new Date())
     }
   },
   mounted() {
@@ -120,10 +120,16 @@ export default {
 
 <style>
 #contributionDay {
-  padding: 50px;
+  height: 100%;
+  width: 100%;
 }
 #contriGraphday {
-  width: 1000px;
-  height: 600px;
+  width: 100%;
+  height: 100%;
+}
+.daySelector {
+  height: 50px;
+  line-height: 40px;
+  text-align: center;
 }
 </style>

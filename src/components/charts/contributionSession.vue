@@ -1,7 +1,7 @@
 <template>
   <div id="contributionSession">
     <div class="sessionSelector">
-      <el-cascader @change="changePieSession" :options="selectOptions"></el-cascader>
+      <el-cascader @change="changePieSession" :options="selectOptions" v-model="selectedInit"></el-cascader>
     </div>
     <div id="contriGraph"></div>
   </div>
@@ -14,6 +14,7 @@ export default {
     return {
       PieGraphObj: null,
       grapOptionsInit: null,
+      selectedInit: ['2017', 'spring'],
       selectOptions: [
         {
           value: '2010',
@@ -65,7 +66,7 @@ export default {
         text: '随季节变化的影响因子',
         left: 'center',
         top: 20,
-        subtext: '2018/冬季'
+        subtext: this.selectedInit[0] + this.formatSession(this.selectedInit[1])
       },
 
       tooltip: {
@@ -173,10 +174,16 @@ export default {
 
 <style>
 #contributionSession {
-  padding: 50px;
+  width: 100%;
+  height: 100%;
 }
 #contriGraph {
-  width: 1000px;
-  height: 600px;
+  width: 100%;
+  height: 100%;
+}
+.sessionSelector{
+  height: 50px;
+  line-height: 40px;
+  text-align: center;
 }
 </style>
