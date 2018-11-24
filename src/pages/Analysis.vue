@@ -48,6 +48,12 @@
           </el-form>
         </div>
       </div>
+      <div class="relation-middle-container">
+        <relation-seasion></relation-seasion>
+      </div>
+      <div class="relation-right-container">
+        <relation-day></relation-day>
+      </div>
     </div>
   </div>
 </template>
@@ -57,12 +63,17 @@ import allPredict from '../components/charts/allpredict'
 import weekPredict from '../components/charts/weekPredict'
 import contributionSession from '../components/charts/contributionSession'
 import contributionDay from '../components/charts/contributionDay'
+import relationDay from '../components/charts/relationDay'
+import relationSeasion from '../components/charts/relationSeasion'
+
 export default {
   components: {
     allPredict,
     weekPredict,
     contributionSession,
-    contributionDay
+    contributionDay,
+    relationDay,
+    relationSeasion
   },
   data() {
     return {
@@ -204,6 +215,7 @@ export default {
   padding: 20px;
   padding-top: 40px;
   position: relative;
+  display: flex;
 }
 .relation-inputs-section {
   margin-top: 40px;
@@ -215,5 +227,11 @@ export default {
 .realtion-left {
   width: 300px;
   margin: 0 20px 0 0;
+}
+.relation-middle-container {
+  flex-grow: 2;
+}
+.relation-right-container {
+  flex-grow: 2;
 }
 </style>

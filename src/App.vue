@@ -146,6 +146,6 @@ export default {
   height: 100%;
 } */
 #router-container {
-  padding: 0
+  padding: 0;
 }
 </style>
