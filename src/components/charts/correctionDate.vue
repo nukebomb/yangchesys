@@ -66,10 +66,12 @@ export default {
 
 <style>
 #correcDateGraph {
-  padding: 50px;
+  padding: 20px;
+  width: 100%;
+  height: 100%;
 }
 #grapContainer {
-  width: 1000px;
-  height: 700px;
+  width: 100%;
+  height: calc(100% - 20px);
 }
 </style>
