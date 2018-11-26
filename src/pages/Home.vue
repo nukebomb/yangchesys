@@ -121,7 +121,9 @@ export default {
       // }
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert('submitSearch')
+          this.$axios.get('http://localhost:3000/home/search/' + JSON.stringify(this.homeForm)).then(res => {
+            let data = res.data
+          })
         } else {
           console.log('error submit')
           return false

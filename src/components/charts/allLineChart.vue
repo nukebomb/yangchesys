@@ -29,8 +29,8 @@ export default {
   },
   watch: {
     graphData(newVal, oldVal) {
-      console.log(newVal)
-      console.log(oldVal)
+      // console.log(newVal)
+      // console.log(oldVal)
     }
   },
   methods: {
