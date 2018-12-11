@@ -20,7 +20,7 @@ export default {
           location: element.location,
           rank: element.rank
         }
-        console.log(point)
+        // console.log(point)
         this.addMarker(map, point, options)
       })
     })

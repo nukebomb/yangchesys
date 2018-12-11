@@ -26,9 +26,10 @@
                   v-model="homeForm.area"
                 ></el-cascader>
               </el-form-item>
-              <el-form-item label="日期" prop="date">
-                <el-date-picker v-model="homeForm.date.startMonth" type="month"></el-date-picker>&nbsp;-
-                <el-date-picker type="month" v-model="homeForm.date.endMonth"></el-date-picker>
+              <el-form-item label="日期" prop="date" style="min-width:320px">
+                <el-col :span="10"><el-date-picker v-model="homeForm.date.startMonth" type="month" style="width: 100%"></el-date-picker></el-col>
+                <el-col :span="1" style="text-align: center">-</el-col>
+                <el-col :span="10"><el-date-picker type="month" v-model="homeForm.date.endMonth" style="width: 100%"></el-date-picker></el-col>
               </el-form-item>
               <el-form-item>
                 <el-button
@@ -43,7 +44,7 @@
         </div>
         <div class="bottom-graph">
           <div class="title">
-            <span class="subtitle">全市扬尘变化趋势</span>
+            <span class="subtitle">{{ currentArea }}扬尘变化趋势</span>
           </div>
           <div class="home-charts-container">
             <all-line-chart :graph-data="lineChartsData"></all-line-chart>
@@ -75,6 +76,7 @@ export default {
     allLineChart
   },
   data() {
+    // 2个表单验证规则
     const datepickerRule = function (rule, value, callback) {
       let start = new Date(value.startMonth)
       let end = new Date(value.endMonth)
@@ -96,6 +98,7 @@ export default {
       }
     }
     return {
+      currentArea: '全市',
       homeForm: {
         area: null,
         date: {
@@ -146,8 +149,14 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           // 请求，查询对应时间的区域的历史数据
-          this.$axios.get('http://localhost:3000/home/search/' + JSON.stringify(this.homeForm)).then(res => {
-            // let data = res.data
+          let area = !this.homeForm.area[1] ? this.homeForm.area[0] : this.homeForm.area[1]
+          let date = this.homeForm.date
+          console.log('area : ' + area)
+          console.log(date)
+          this.$axios.get('http://localhost:3000/home/search/' + area + '/' + JSON.stringify(date)).then(res => {
+            let data = res.data
+            this.currentArea = data.area
+            console.log(data)
           })
         } else {
           console.log('error submit')
@@ -203,7 +212,6 @@ export default {
   width: 40%;
   right: 0;
   top: 0;
-  height: calc(100% - 40px);
   /* background-color: #545c64; */
   margin: 20px 20px 20px 0;
   padding-top: 10px;
@@ -266,7 +274,7 @@ export default {
   width: 180px;
 }
 .home-charts-container {
-  padding: 20px 5px 0 5px;
+  padding: 0px 5px 0 5px;
   width: 100%;
   height: 100%;
   min-height: 300px;
