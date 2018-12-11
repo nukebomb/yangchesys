@@ -47,7 +47,7 @@
             <span class="subtitle">{{ currentArea }}扬尘变化趋势</span>
           </div>
           <div class="home-charts-container">
-            <all-line-chart :graph-data="lineChartsData"></all-line-chart>
+            <all-line-chart :graph-data="lineChartsData" ref="homeLineChart"></all-line-chart>
           </div>
         </div>
       </div>
@@ -151,12 +151,11 @@ export default {
           // 请求，查询对应时间的区域的历史数据
           let area = !this.homeForm.area[1] ? this.homeForm.area[0] : this.homeForm.area[1]
           let date = this.homeForm.date
-          console.log('area : ' + area)
-          console.log(date)
+
           this.$axios.get('http://localhost:3000/home/search/' + area + '/' + JSON.stringify(date)).then(res => {
             let data = res.data
             this.currentArea = data.area
-            console.log(data)
+            this.$refs.homeLineChart.grapmaker(data.data, data.category)
           })
         } else {
           console.log('error submit')
@@ -266,8 +265,6 @@ export default {
 }
 .inputs-section {
   padding: 0 30px;
-}
-.el-form-item.home-reaserach label {
 }
 .el-button.home-btn {
   margin: 0 0 0 40px;
