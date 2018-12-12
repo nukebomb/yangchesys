@@ -1,4 +1,5 @@
 /*
+import { constants } from 'http2';
  * @Author: mikey.zhaopeng
  * @Date: 2018-12-12 11:05:56
  * @Last Modified by: mikey.zhaopeng
@@ -38,7 +39,7 @@ export default {
     this.$axios.get('http://localhost:3000/map').then(res => {
       // console.log(res.data)
       // 点位属于哪个区现在是前端的模拟，随机生成的，设计以后端返回的数据中就带上点位属于哪个区，前端不做判断
-      let areas = ['青羊区', '武侯区', '金牛区', '武侯区']
+      let areas = ['双流区', '武侯区', '金牛区', '高新区']
       // 初始化点位,构建全市所需要的点位，并赋值到全局。
       this.allPoints = []
       res.data.forEach(element => {
@@ -93,23 +94,24 @@ export default {
     showPoints(area) {
       // 根据区域切换对应的点位
       let areaZH = this.areaTransform(area)
-      let pointsSpecialArea = []
+      // 如果之前就有图层，应该先清除
+      if (this.currentMaker) {
+        this.initMap.clearOverlays()
+      }
       this.allPoints.forEach(ele => {
         if (ele.options.area === areaZH) {
-          pointsSpecialArea.push(ele)
           this.addMarker(ele.point, ele.options)
         }
       })
-      console.log(pointsSpecialArea)
     },
     addMarker(point, options) {
-      this.initMap.removeOverlay(this.currentMaker)
       var cleanIcon = new window.BMap.Icon(`../../static/imgs/${options.color}.png`, new window.BMap.Size(20, 20), {
       })
       cleanIcon.imageSize = new window.BMap.Size(20, 20)
       this.currentMaker = new window.BMap.Marker(point, { icon: cleanIcon })
       this.currentMaker.id = options.id
 
+      // 每个点位添加点击事件，点击弹出点位详细信息文本框。
       this.currentMaker.addEventListener('click', (e) => {
         // console.log(e.currentTarget.id)
         let opts = {
@@ -123,7 +125,6 @@ export default {
       })
 
       this.initMap.addOverlay(this.currentMaker)
-      // map.removeOverlay(cleanMarker)
     }
   }
 }
