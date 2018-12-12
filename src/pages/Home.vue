@@ -7,7 +7,7 @@
             <div class="title">
               <span class="subtitle">监测点位置信息</span>
             </div>
-            <map-area></map-area>
+            <map-area ref="homeMap"></map-area>
           </div>
         </div>
       </div>
@@ -27,9 +27,17 @@
                 ></el-cascader>
               </el-form-item>
               <el-form-item label="日期" prop="date" style="min-width:320px">
-                <el-col :span="10"><el-date-picker v-model="homeForm.date.startMonth" type="month" style="width: 100%"></el-date-picker></el-col>
+                <el-col :span="10">
+                  <el-date-picker
+                    v-model="homeForm.date.startMonth"
+                    type="month"
+                    style="width: 100%"
+                  ></el-date-picker>
+                </el-col>
                 <el-col :span="1" style="text-align: center">-</el-col>
-                <el-col :span="10"><el-date-picker type="month" v-model="homeForm.date.endMonth" style="width: 100%"></el-date-picker></el-col>
+                <el-col :span="10">
+                  <el-date-picker type="month" v-model="homeForm.date.endMonth" style="width: 100%"></el-date-picker>
+                </el-col>
               </el-form-item>
               <el-form-item>
                 <el-button
@@ -148,15 +156,18 @@ export default {
     submitSearch(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          // 请求，查询对应时间的区域的历史数据
+          // 1.请求，查询对应时间的区域的历史数据,精度月
           let area = !this.homeForm.area[1] ? this.homeForm.area[0] : this.homeForm.area[1]
           let date = this.homeForm.date
-
           this.$axios.get('http://localhost:3000/home/search/' + area + '/' + JSON.stringify(date)).then(res => {
             let data = res.data
             this.currentArea = data.area
+            // 调用子组件linechart的事件
             this.$refs.homeLineChart.grapmaker(data.data, data.category)
           })
+
+          // 2.地图的点位切换到对应的区域
+          this.$refs.homeMap.showPoints(area)
         } else {
           console.log('error submit')
           return false
