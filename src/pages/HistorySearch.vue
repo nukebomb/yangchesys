@@ -2,7 +2,7 @@
   <div id="historySearch">
     <div class="history-left-container">
       <div class="history-right-form-title history-left-top-container">
-        <span class="history-subtitle">点位信息</span>
+        <span class="history-subtitle">{{ pickedArea }}点位信息</span>
       </div>
       <div class="history-map-left">
         <map-area></map-area>
@@ -68,6 +68,7 @@ export default {
   },
   data() {
     return {
+      pickedArea: '全市',
       historyForm: {
         area: null,
         date: null,

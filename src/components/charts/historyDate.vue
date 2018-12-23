@@ -1,3 +1,13 @@
+/*
+ * @Author: mikey.zhaopeng 
+ * @Date: 2018-12-23 14:18:18 
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-12-23 15:15:59
+ * description: 此组件是用于综合查询页面的折线图组件
+ * 初始页面时，默认加载的是全市按年度的历史数据（2015-2018）
+ * 向父组件传drawGraph方法，通过此方法实现切换区域，对应的折线图相应变化。
+ */
+
 <template>
   <div class="historyDate">
     <div id="historyGraphcon"></div>
@@ -5,14 +15,14 @@
 </template>
 
 <script>
-import Axios from 'axios'
 export default {
   data() {
     return {
       zoneRadio: 'allchengdu',
       pickedDate: null,
       historyGraph: null,
-      showedArea: null
+      showedArea: null,
+      graphOption: null
     }
   },
   computed: {
@@ -23,18 +33,13 @@ export default {
   },
   mounted() {
     this.historyGraph = this.echarts.init(document.getElementById('historyGraphcon'))
-    Axios.get('http://localhost:3000/history/cdmonth').then((data) => {
-      // 'http://localhost:3000/history/chengdu'
-      console.log(data)
+    // 页面初始化时，向后端请求： 2015-2018全市年度数据
+    this.$axios.get('http://localhost:3000/history/init').then((data) => {
+      // console.log(data)
       const historyOption = {
         title: {
           text: '各区域扬尘历史数据',
           padding: [5, 20]
-          // subtext: '全市',
-          // subtextStyle: {
-          //   color: 'rgba(0,0,0,0.8)',
-          //   fontWeight: 'normal'
-          // }
         },
         toolbox: {
           feature: {
@@ -43,19 +48,6 @@ export default {
             }
           }
         },
-        // dataZoom: [
-        //   {
-        //     type: 'slider',
-        //     show: true,
-        //     start: 80,
-        //     end: 100
-        //   },
-        //   {
-        //     type: 'inside',
-        //     start: 80,
-        //     end: 100
-        //   }
-        // ],
         tooltip: {
           trigger: 'axis'
         },
@@ -73,27 +65,47 @@ export default {
           type: 'line'
         }]
       }
+      this.graphOption = historyOption
       this.historyGraph.setOption(historyOption)
     })
   },
   methods: {
-    submitHistory() {
-      switch (this.zoneRadio) {
-        case 'allchengdu':
-          // console.log(this.pickedDate[0])
-          this.drawGraph(`http://localhost:3000/history/all/${this.pickedDate[0]}/${this.pickedDate[1]}`)
-          console.log(`http://localhost:3000/history/all/${this.pickedDate[0]}/${this.pickedDate[1]}`)
-          break
-        case 'particalArea':
-          this.drawGraph('http://localhost:3000/history/zones/' + this.pickedDate[0] + '/' + this.pickedDate[1])
-          break
-        case 'particalSpot':
-          this.drawGraph('http://localhost:3000/history/spots/' + this.pickedDate[0] + '/' + this.pickedDate[1])
-          break
-      }
-    },
-    drawGraph(url) {
-      Axios.get(url).then(data => {
+    // submitHistory() {
+    //   switch (this.zoneRadio) {
+    //     case 'allchengdu':
+    //       // console.log(this.pickedDate[0])
+    //       this.drawGraph(`http://localhost:3000/history/all/${this.pickedDate[0]}/${this.pickedDate[1]}`)
+    //       console.log(`http://localhost:3000/history/all/${this.pickedDate[0]}/${this.pickedDate[1]}`)
+    //       break
+    //     case 'particalArea':
+    //       this.drawGraph('http://localhost:3000/history/zones/' + this.pickedDate[0] + '/' + this.pickedDate[1])
+    //       break
+    //     case 'particalSpot':
+    //       this.drawGraph('http://localhost:3000/history/spots/' + this.pickedDate[0] + '/' + this.pickedDate[1])
+    //       break
+    //   }
+    // },
+    
+    /*
+    * drawGraph(area|string, date|string, method)
+    * area: 所选区域，
+    * date: 时间范围，
+    * method： 显示方式（按年度，季度，月度）
+    * return null
+    */
+    drawGraph(area, date, method) {
+      this.$axios.get('http://localhost:3000/history/' + area + '/' + date + '/' + method).then(data => {
+        /* 
+        * 向后端请求，返回的数据格式：
+        * {
+        * ...
+        * data: {
+        * category: ['2015','2016'],// 选取的时间段。会在
+        * data: [pm10值, ...]
+        * }
+        * ...
+        * }
+        */
         var realseries = null
         var realLegend = null
         if (data.data.name === 'allcityByTime') {
