@@ -5,7 +5,7 @@
         <div class="home-leftside-inner">
           <div class="home-maptop">
             <div class="title">
-              <span class="subtitle">监测点位置信息</span>
+              <span class="subtitle">{{currentArea}}监测点位置信息</span>
             </div>
             <map-area ref="homeMap"></map-area>
           </div>
@@ -63,7 +63,7 @@
     <div class="home-secondline">
       <div class="home-rankbottom">
         <div class="title">
-          <span class="subtitle">监测点污染等级</span>
+          <span class="subtitle">{{currentArea}}监测点污染等级</span>
         </div>
         <rank-table></rank-table>
       </div>
@@ -166,8 +166,8 @@ export default {
             this.$refs.homeLineChart.grapmaker(data.data, data.category)
           })
 
-          // 2.地图的点位切换到对应的区域
-          this.$refs.homeMap.showPoints(area)
+          // 2.地图的点位切换到对应的区域，对应的时间段，点位的信息。
+          this.$refs.homeMap.showPoints(area, JSON.stringify(date))
         } else {
           console.log('error submit')
           return false

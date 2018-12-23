@@ -5,7 +5,7 @@ import { constants } from 'http2';
  * @Last Modified by: mikey.zhaopeng
  * @Last Modified time: 2018-12-12 12:40:20
  * desciption:
- *  1.实现父组件点击相应区域，能够切换到只显示对应区域的点位信息，目前是通过添加和移除标注点实现，后期考虑用自定义图层实现。
+ *  1.实现父组件点击相应区域，能够切换到只显示对应区域的点位信息，通过添加和移除标注点实现。
  */
 
 <template>
@@ -23,7 +23,7 @@ export default {
   },
   name: 'mapArea',
   mounted() {
-    // 初始请求全市的所有点位，时间段为最大的时间段，精度为月
+    // 初始请求全市的所有点位，时间段为最大的时间段，pm10为总的平均值
     /* 请求回来的数据格式为：
     ** res.data = [{
     **    color: "blue"
@@ -36,7 +36,8 @@ export default {
     **},...]
     */
     this.initMap = this.drawMap()
-    this.$axios.get('http://localhost:3000/map').then(res => {
+    // 向后端请求： 放回所有点位信息
+    this.$axios.get('http://localhost:3000/map/init').then(res => {
       // console.log(res.data)
       // 点位属于哪个区现在是前端的模拟，随机生成的，设计以后端返回的数据中就带上点位属于哪个区，前端不做判断
       let areas = ['双流区', '武侯区', '金牛区', '高新区']
@@ -91,18 +92,41 @@ export default {
       }
       return Zh
     },
-    showPoints(area) {
-      // 根据区域切换对应的点位
-      let areaZH = this.areaTransform(area)
+    // 根据区域切换对应的点位，传到home父组件，用于调用改变区域切换后点位显示。
+    showPoints(area, date) {
+      // let areaZH = this.areaTransform(area)
       // 如果之前就有图层，应该先清除
       if (this.currentMaker) {
         this.initMap.clearOverlays()
       }
-      this.allPoints.forEach(ele => {
-        if (ele.options.area === areaZH) {
-          this.addMarker(ele.point, ele.options)
-        }
+      // 向后端请求： 携带参数area，时间，返回对应区域对应时间的点位信息
+      this.$axios.get('http://localhost:3000/map/spec/' + area + '/' + JSON.stringify(date)).then(res => {
+        // console.log(res.data)
+        // 点位属于哪个区现在是后端的模拟，前端不做判断
+        // 初始化点位,构建全市所需要的点位，并赋值到全局。
+        this.allPoints = []
+        res.data.forEach(element => {
+          let point = new window.BMap.Point(element.positionX, element.positionY)
+          let options = {
+            id: element.id,
+            color: element.color,
+            location: element.location,
+            pm10: element.pm10,
+            // 目前后端没提供点位所属区域，由前端模拟。
+            area: element.area
+          }
+          this.allPoints.push({
+            point,
+            options
+          })
+          this.addMarker(point, options)
+        })
       })
+      // this.allPoints.forEach(ele => {
+      //   if (ele.options.area === areaZH) {
+      //     this.addMarker(ele.point, ele.options)
+      //   }
+      // })
     },
     addMarker(point, options) {
       var cleanIcon = new window.BMap.Icon(`../../static/imgs/${options.color}.png`, new window.BMap.Size(20, 20), {
