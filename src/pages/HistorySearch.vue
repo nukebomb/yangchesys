@@ -24,26 +24,15 @@
               ></el-cascader>
             </el-form-item>
             <el-form-item label="显示方式" prop="method">
-              <el-select v-model="historyForm.method">
-                <el-option
-                  v-for="(item,index) in timeMethodOptions"
-                  :key="index"
-                  :label="item.label"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
-              <!-- <el-cascader v-model="historyForm.method" :options="timeMethodOptions"  expand-trigger="hover" size="mini"></el-cascader> -->
+              <el-cascader
+                v-model="historyForm.method"
+                @change="whichMethod"
+                :options="timeMethodOptions"
+                expand-trigger="hover"
+              ></el-cascader>
             </el-form-item>
-            <el-form-item label="日期" prop="date">
-              <!-- <el-date-picker
-                v-model="historyForm.date"
-                type="daterange"
-                range-separator="至"
-                size="mini"
-              ></el-date-picker> -->
-            </el-form-item>
-            <el-form-item>
-              <el-date-picker type="month"></el-date-picker>
+            <el-form-item label="日期" prop="date" v-if="monthSelected">
+              <el-date-picker type="month" v-model="historyForm.date"></el-date-picker>
             </el-form-item>
             <el-form-item>
               <el-button class="home-btn" size="mini" type="primary" @click="showMethods">查 询</el-button>
@@ -52,7 +41,7 @@
         </div>
       </div>
       <div class="history-bottom-graph">
-        <history-date></history-date>
+        <history-date ref="historyLineChart"></history-date>
       </div>
     </div>
   </div>
@@ -69,16 +58,13 @@ export default {
   data() {
     return {
       pickedArea: '全市',
+      monthSelected: false, // 显示方式为月份是为true
       historyForm: {
         area: null,
         date: null,
         method: null
       },
       timeMethodOptions: [
-        //   {
-        //   value: 'day',
-        //   label: '日'
-        // },
         {
           value: 'month',
           label: '月'
@@ -97,7 +83,7 @@ export default {
             },
             {
               label: '秋季',
-              value: 'atum'
+              value: 'autumn'
             },
             {
               label: '冬季',
@@ -153,6 +139,24 @@ export default {
   },
   methods: {
     showMethods() {
+      // 格式化向子组件传递的参数
+      const dataTransform = {}
+      dataTransform.area = this.historyForm.area[1] ? this.historyForm.area[1] : this.historyForm.area[0]
+      dataTransform.method = this.historyForm.method[1] ? this.historyForm.method[1] : this.historyForm.method[0]
+      if (this.historyForm.date) {
+        dataTransform.date = this.historyForm.date
+      }
+
+      // 引用折线图组件的方法，根据所选，绘出折线图。
+      this.$refs.historyLineChart.drawGraph(dataTransform.area, dataTransform.date, dataTransform.method)
+    },
+    // 判断当前选中的显示方式，确定是否显示日期选择器
+    whichMethod(el) {
+      if (el[0] === 'month') {
+        this.monthSelected = true
+      } else {
+        this.monthSelected = false
+      }
     }
   }
 }
