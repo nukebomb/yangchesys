@@ -94,6 +94,7 @@ export default {
     * return null
     */
     drawGraph(formdata) {
+      console.log(formdata)
       this.$axios.post('http://localhost:3000/history', qs.stringify(formdata)).then(data => {
         /*
         * formdata: {

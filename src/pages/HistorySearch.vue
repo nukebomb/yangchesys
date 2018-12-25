@@ -148,7 +148,7 @@ export default {
       }
 
       // 引用折线图组件的方法，根据所选，绘出折线图。
-      this.$refs.historyLineChart.drawGraph(dataTransform.area, dataTransform.date, dataTransform.method)
+      this.$refs.historyLineChart.drawGraph(dataTransform)
     },
     // 判断当前选中的显示方式，确定是否显示日期选择器
     whichMethod(el) {
