@@ -1,17 +1,17 @@
 <template>
-  <div id="correcDateGraph">
-    <div id="datePicker">
+  <!-- <div id="correcDateGraph"> -->
+    <!-- <div id="datePicker">
       <el-date-picker type="daterange" v-model="pickedDate" range-separator="至" @change="drawWithDate"></el-date-picker>
-    </div>
+    </div> -->
     <div id="grapContainer"></div>
-  </div>
+  <!-- </div> -->
 </template>
 
 <script>
 export default {
   data() {
     return {
-      pickedDate: null,
+      // pickedDate: null,
       correctPie: null
     }
   },
@@ -20,36 +20,40 @@ export default {
   },
   methods: {
     drawWithDate() {
-      let startDate = new Date(this.pickedDate[0])
-      let time = (this.pickedDate[1].getTime() - this.pickedDate[0].getTime()) / (1000 * 60 * 60 * 24)
-      let category = [this.dealDate(startDate)]
+      // let startDate = new Date(this.pickedDate[0])
+      // let time = (this.pickedDate[1].getTime() - this.pickedDate[0].getTime()) / (1000 * 60 * 60 * 24)
+      // let category = [this.dealDate(startDate)]
 
-      let mockData = {
-        predictData: [103],
-        realData: [140]
-      }
+      // let mockData = {
+      //   predictData: [103],
+      //   realData: [140]
+      // }
 
-      for (let i = 0; i < time; i++) {
-        startDate.setDate(startDate.getDate() + 1)
-        category.push(this.dealDate(startDate))
-        mockData.predictData.push(Math.floor(Math.random() * 200))
-        mockData.realData.push(Math.floor(Math.random() * 200))
-      }
+      // for (let i = 0; i < time; i++) {
+      //   startDate.setDate(startDate.getDate() + 1)
+      //   category.push(this.dealDate(startDate))
+      //   mockData.predictData.push(Math.floor(Math.random() * 200))
+      //   mockData.realData.push(Math.floor(Math.random() * 200))
+      // }
       // console.log(category)
       this.correctPie.setOption({
         xAxis: {
           type: 'category',
-          data: category
+          // data: category
+          data: ['xx', 'yy', 'zz']
+
         },
         yAxis: {
           type: 'value'
         },
         series: [{
-          data: mockData.predictData,
+          // data: mockData.predictData,
+          data: [11,22,33],
           type: 'line'
         },
         {
-          data: mockData.realData,
+          // data: mockData.realData,
+          data: [12,26,53],
           type: 'line'
         }]
       })
@@ -65,11 +69,11 @@ export default {
 </script>
 
 <style>
-#correcDateGraph {
+/* #correcDateGraph {
   padding: 20px;
   width: 100%;
   height: 100%;
-}
+} */
 #grapContainer {
   width: 100%;
   height: calc(100% - 20px);

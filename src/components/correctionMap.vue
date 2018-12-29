@@ -9,13 +9,52 @@ import { constants } from 'http2';
  */
 
 <template>
-  <div id="allmap"></div>
+  <div id="mapContainer">
+    <div id="allmap"></div>
+    <div id="rightPanel">
+      <div class="fristLine">
+        <div class="title">
+          <span class="subtitle">日期选择</span>
+        </div>
+        <div class="correction-form">
+          <el-form :inline="true" v-model="correcForm">
+            <el-form-item>
+              <el-date-picker type="daterange" v-model="correcForm.pickedDate" range-separator="至"></el-date-picker>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="showCorrection">查询</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+      </div>
+      <!-- <div class="2nd-line">
+        <div class="title">
+          <span class="subtitle">点位详细信息</span>
+        </div>
+      </div>-->
+      <div class="thirdLine">
+        <div class="title">
+          <span class="subtitle">点位对比图</span>
+        </div>
+        <div id="correct-line-container">
+          <correction-date ref="correctLine"></correction-date>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+import correctionDate from '../components/charts/correctionDate'
 export default {
+  components: {
+    correctionDate
+  },
   data() {
     return {
+      correcForm: {
+        pickedDate: null
+      },
       initMap: null,
       allPoints: null,
       currentMaker: null
@@ -150,14 +189,41 @@ export default {
       })
 
       this.initMap.addOverlay(this.currentMaker)
+    },
+    // 显示对应日期的点位信息
+    showCorrection() {
+      this.$refs.correctLine.drawWithDate()
     }
   }
 }
 </script>
 
 <style>
+#mapContainer {
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
 #allmap {
   width: 100%;
-  height: calc(100% - 40px);
+  height: 100%;
+}
+#rightPanel {
+  width: 500px;
+  background-color: rgb(255 , 255, 255);
+  min-height: 580px;
+  position: absolute;
+  right: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 200;
+}
+.fristLine {
+  padding: 0 20px;
+}
+#correct-line-container {
+  width: 100%;
+  height: 380px;
+  /* background-color: yellow; */
 }
 </style>

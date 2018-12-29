@@ -5,7 +5,7 @@
         <span class="history-subtitle">{{ pickedArea }}点位信息</span>
       </div>
       <div class="history-map-left">
-        <map-area></map-area>
+        <map-area ref="historyPoints"></map-area>
       </div>
     </div>
     <div class="history-right-container">
@@ -41,6 +41,9 @@
         </div>
       </div>
       <div class="history-bottom-graph">
+        <div class="history-right-form-title history-left-top-container">
+        <span class="history-subtitle">{{ pickedArea }}区域扬尘历史数据</span>
+      </div>
         <history-date ref="historyLineChart"></history-date>
       </div>
     </div>
@@ -117,22 +120,6 @@ export default {
               label: '金牛区', value: 'jingniu'
             }
           ]
-        }, {
-          value: 'points',
-          label: '点位查询',
-          children: [
-            {
-              label: '0x123', value: '0x123'
-            }, {
-              label: '0x124', value: '0x123'
-            }, {
-              label: '0x153', value: '0x123'
-            }, {
-              label: '0x1x3', value: '0x123'
-            }, {
-              label: '0x1v3', value: '0x123'
-            }
-          ]
         }
       ]
     }
@@ -149,6 +136,36 @@ export default {
 
       // 引用折线图组件的方法，根据所选，绘出折线图。
       this.$refs.historyLineChart.drawGraph(dataTransform)
+
+      // 点位切换到对应的区域, 目前参数存在一点问题
+      this.$refs.historyPoints.showPoints(dataTransform.area, dataTransform.method)
+
+      // 切换本页面的标题
+      this.pickedArea = this.areaTransform(dataTransform.area)
+    },
+    areaTransform(str) {
+      let Zh = null
+      switch (str) {
+        case 'allcity':
+          Zh = '全市'
+          break
+        case 'wuhou':
+          Zh = '武侯区'
+          break
+        case 'chenghua':
+          Zh = '成华区'
+          break
+        case 'gaoxin':
+          Zh = '高新区'
+          break
+        case 'shuangliu':
+          Zh = '双流区'
+          break
+        case 'jingniu':
+          Zh = '金牛区'
+          break
+      }
+      return Zh
     },
     // 判断当前选中的显示方式，确定是否显示日期选择器
     whichMethod(el) {

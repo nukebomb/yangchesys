@@ -38,10 +38,10 @@ export default {
     this.$axios.get('http://localhost:3000/history/init').then((data) => {
       // console.log(data)
       const historyOption = {
-        title: {
-          text: '各区域扬尘历史数据',
-          padding: [5, 20]
-        },
+        // title: {
+        //   text: '扬尘历史数据',
+        //   padding: [5, 20]
+        // },
         toolbox: {
           feature: {
             dataZoom: {
@@ -71,21 +71,6 @@ export default {
     })
   },
   methods: {
-    // submitHistory() {
-    //   switch (this.zoneRadio) {
-    //     case 'allchengdu':
-    //       // console.log(this.pickedDate[0])
-    //       this.drawGraph(`http://localhost:3000/history/all/${this.pickedDate[0]}/${this.pickedDate[1]}`)
-    //       console.log(`http://localhost:3000/history/all/${this.pickedDate[0]}/${this.pickedDate[1]}`)
-    //       break
-    //     case 'particalArea':
-    //       this.drawGraph('http://localhost:3000/history/zones/' + this.pickedDate[0] + '/' + this.pickedDate[1])
-    //       break
-    //     case 'particalSpot':
-    //       this.drawGraph('http://localhost:3000/history/spots/' + this.pickedDate[0] + '/' + this.pickedDate[1])
-    //       break
-    //   }
-    // },
     /*
     * drawGraph(area|string, date|string, method)
     * area: 所选区域，
@@ -94,7 +79,6 @@ export default {
     * return null
     */
     drawGraph(formdata) {
-      console.log(formdata)
       this.$axios.post('http://localhost:3000/history', qs.stringify(formdata)).then(data => {
         /*
         * formdata: {
@@ -115,18 +99,18 @@ export default {
         * ...
         * }
         */
-        console.log(data)
+        // console.log(data)
         const historyOption = {
           xAxis: {
             type: 'category',
-            data: ['2015', '2016', '2017', '2018', '2020']
+            data: data.data.category
           },
           yAxis: {
             type: 'value'
           },
           series: [{
             name: '成华区',
-            data: [100, 200, 300, 400, 0],
+            data: data.data.data,
             type: 'line'
           }]
         }
