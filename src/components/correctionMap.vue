@@ -11,7 +11,31 @@ import { constants } from 'http2';
 <template>
   <div id="mapContainer">
     <div id="allmap"></div>
-    <div id="rightPanel">
+    <div id="rightPanel" v-if="chartBox">
+      <div class="pannelheader">
+        <span v-on:click="closePanel">
+          <i class="iconfront-yc icon-yc-close"></i>
+        </span>
+      </div>
+      <div class="addedline">
+        <div class="title">
+          <span class="subtitle">点位详情</span>
+        </div>
+        <table id="detail-table">
+          <tr>
+            <td>点位ID：</td>
+            <td>{{ currentSpot.id}}</td>
+          </tr>
+          <tr>
+            <td>地理位置：</td>
+            <td>{{ currentSpot.location}}</td>
+          </tr>
+          <tr>
+            <td>所属区域：</td>
+            <td>{{ currentSpot.area}}</td>
+          </tr>
+        </table>
+      </div>
       <div class="fristLine">
         <div class="title">
           <span class="subtitle">日期选择</span>
@@ -22,7 +46,7 @@ import { constants } from 'http2';
               <el-date-picker type="daterange" v-model="correcForm.pickedDate" range-separator="至"></el-date-picker>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="showCorrection">查询</el-button>
+              <el-button type="primary" @click="showCorrection(currentSpot.id, correcForm.pickedDate)">查询</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -52,6 +76,8 @@ export default {
   },
   data() {
     return {
+      chartBox: false,
+      currentSpot: null,
       correcForm: {
         pickedDate: null
       },
@@ -177,22 +203,33 @@ export default {
 
       // 每个点位添加点击事件，点击弹出点位详细信息文本框。
       this.currentMaker.addEventListener('click', (e) => {
+        // 点击显示右边的框
+        this.chartBox = true
+        // 修改点位详情的数据
+        this.currentSpot = options
         // console.log(e.currentTarget.id)
-        let opts = {
-          width: 250,
-          height: 100,
-          title: '点位信息',
-          offset: new window.BMap.Size(0, 20)
-        }
-        var infoWindow = new window.BMap.InfoWindow(`<span>id: ${options.id}<span></br><span>pm10:${options.pm10}μg/m³</span></br><span>地理位置：${options.location}</span></br><span>区域：${options.area}</span>`, opts)
-        this.initMap.openInfoWindow(infoWindow, point)
+        // let opts = {
+        //   width: 250,
+        //   height: 100,
+        //   title: '点位信息',
+        //   offset: new window.BMap.Size(0, 20)
+        // }
+        // var infoWindow = new window.BMap.InfoWindow(`<span>id: ${options.id}<span></br><span>pm10:${options.pm10}μg/m³</span></br><span>地理位置：${options.location}</span></br><span>区域：${options.area}</span>`, opts)
+        // this.initMap.openInfoWindow(infoWindow, point)
       })
 
       this.initMap.addOverlay(this.currentMaker)
     },
     // 显示对应日期的点位信息
-    showCorrection() {
-      this.$refs.correctLine.drawWithDate()
+    showCorrection(spotId, time) {
+      var spotMessage = {
+        id: spotId,
+        date: JSON.stringify(time)
+      }
+      this.$refs.correctLine.drawWithDate(spotMessage)
+    },
+    closePanel() {
+      this.chartBox = false
     }
   }
 }
@@ -200,6 +237,7 @@ export default {
 
 <style>
 #mapContainer {
+  min-height: 800px;
   height: 100%;
   width: 100%;
   position: relative;
@@ -210,7 +248,7 @@ export default {
 }
 #rightPanel {
   width: 500px;
-  background-color: rgb(255 , 255, 255);
+  background-color: rgb(255, 255, 255);
   min-height: 580px;
   position: absolute;
   right: 0px;
@@ -225,5 +263,14 @@ export default {
   width: 100%;
   height: 380px;
   /* background-color: yellow; */
+}
+#detail-table {
+  padding: 10px 20px;
+}
+.pannelheader {
+  padding: 5px;
+}
+.pannelheader span {
+  cursor: pointer;
 }
 </style>

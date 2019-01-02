@@ -1,13 +1,14 @@
 <template>
   <!-- <div id="correcDateGraph"> -->
-    <!-- <div id="datePicker">
+  <!-- <div id="datePicker">
       <el-date-picker type="daterange" v-model="pickedDate" range-separator="至" @change="drawWithDate"></el-date-picker>
-    </div> -->
-    <div id="grapContainer"></div>
+  </div>-->
+  <div id="grapContainer"></div>
   <!-- </div> -->
 </template>
 
 <script>
+import qs from 'qs'
 export default {
   data() {
     return {
@@ -19,23 +20,12 @@ export default {
     this.correctPie = this.echarts.init(document.getElementById('grapContainer'))
   },
   methods: {
-    drawWithDate() {
-      // let startDate = new Date(this.pickedDate[0])
-      // let time = (this.pickedDate[1].getTime() - this.pickedDate[0].getTime()) / (1000 * 60 * 60 * 24)
-      // let category = [this.dealDate(startDate)]
+    drawWithDate(spotMessage) {
+      console.log(spotMessage)
 
-      // let mockData = {
-      //   predictData: [103],
-      //   realData: [140]
-      // }
-
-      // for (let i = 0; i < time; i++) {
-      //   startDate.setDate(startDate.getDate() + 1)
-      //   category.push(this.dealDate(startDate))
-      //   mockData.predictData.push(Math.floor(Math.random() * 200))
-      //   mockData.realData.push(Math.floor(Math.random() * 200))
-      // }
-      // console.log(category)
+      this.$axios.post('http://localhost:3000/correction', qs.stringify(spotMessage)).then(data => {
+        console.log(data)
+      })
       this.correctPie.setOption({
         xAxis: {
           type: 'category',
@@ -48,12 +38,12 @@ export default {
         },
         series: [{
           // data: mockData.predictData,
-          data: [11,22,33],
+          data: [11, 22, 33],
           type: 'line'
         },
         {
           // data: mockData.realData,
-          data: [12,26,53],
+          data: [12, 26, 53],
           type: 'line'
         }]
       })
