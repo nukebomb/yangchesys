@@ -3,7 +3,7 @@ import { constants } from 'http2';
  * @Author: mikey.zhaopeng
  * @Date: 2018-12-12 11:05:56
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-12-12 12:40:20
+ * @Last Modified time: 2019-01-04 11:25:57
  * desciption:
  *  1.实现父组件点击相应区域，能够切换到只显示对应区域的点位信息，通过添加和移除标注点实现。
  */
@@ -41,12 +41,20 @@ import { constants } from 'http2';
           <span class="subtitle">日期选择</span>
         </div>
         <div class="correction-form">
-          <el-form :inline="true" v-model="correcForm">
-            <el-form-item>
-              <el-date-picker type="daterange" v-model="correcForm.pickedDate" range-separator="至"></el-date-picker>
+          <el-form v-model="correcForm" size="mini" label-position="left" label-width="80px">
+            <el-form-item label="显示方式" prop="method">
+              <el-cascader
+                v-model="correcForm.method"
+                @change="whichMethod"
+                :options="timeMethodOptions"
+                expand-trigger="hover"
+              ></el-cascader>
+            </el-form-item>
+            <el-form-item label="日期" v-if="monthSelected" prop="pickedDate">
+              <el-date-picker type="month" v-model="correcForm.pickedDate"></el-date-picker>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="showCorrection(currentSpot.id, correcForm.pickedDate)">查询</el-button>
+              <el-button type="primary" @click="showCorrection(currentSpot.id, correcForm)">查询</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -79,11 +87,45 @@ export default {
       chartBox: false,
       currentSpot: null,
       correcForm: {
+        method: null,
         pickedDate: null
       },
       initMap: null,
       allPoints: [],
-      currentMaker: null
+      currentMaker: null,
+      timeMethodOptions: [
+        {
+          value: 'month',
+          label: '月'
+        },
+        {
+          value: 'session',
+          label: '季度',
+          children: [
+            {
+              label: '春季',
+              value: 'spring'
+            },
+            {
+              label: '夏季',
+              value: 'summer'
+            },
+            {
+              label: '秋季',
+              value: 'autumn'
+            },
+            {
+              label: '冬季',
+              value: 'winter'
+            }
+          ]
+        },
+        {
+          value: 'year',
+          label: '年度'
+        }
+      ],
+      monthSelected: false
     }
   },
   name: 'mapArea',
@@ -148,15 +190,34 @@ export default {
       this.initMap.addOverlay(this.currentMaker)
     },
     // 显示对应日期的点位信息
-    showCorrection(spotId, time) {
-      var spotMessage = {
-        id: spotId,
-        date: JSON.stringify(time)
+    showCorrection(spotid, formData) {
+      var resultForm = {
+        id: spotid,
+        method: null,
+        date: null
       }
-      this.$refs.correctLine.drawWithDate(spotMessage)
+      if (formData.method[1]) {
+        resultForm.method = formData.method[1]
+      } else {
+        resultForm.method = formData.method[0]
+      }
+      if (resultForm.method === 'month') {
+        resultForm.date = formData.pickedDate
+      } else {
+        resultForm.date = null
+      }
+      this.$refs.correctLine.drawWithDate(resultForm)
     },
     closePanel() {
       this.chartBox = false
+    },
+    // 判断当前选中的显示方式，确定是否显示日期选择器
+    whichMethod(el) {
+      if (el[0] === 'month') {
+        this.monthSelected = true
+      } else {
+        this.monthSelected = false
+      }
     }
   }
 }
