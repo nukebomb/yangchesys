@@ -3,8 +3,8 @@
     <div class="analysis-predict-container">
       <span class="predict-title">全市预测趋势</span>
       <div class="predict-left">
-        <div class="inputs-section">
-          <el-form :model="analysisPredictForm" size="mini" label-position="left">
+        <div class="predict-form">
+          <el-form :model="analysisPredictForm" size="mini" label-position="left" label-width="80px">
             <el-form-item label="区域" prop="area">
               <el-cascader
                 expand-trigger="hover"
@@ -19,9 +19,6 @@
                 expand-trigger="hover"
               ></el-cascader>
             </el-form-item>
-            <!-- <el-form-item label="日期" prop="date">
-              <el-date-picker v-model="analysisPredictForm.date" type="daterange" range-separator="至" size="mini"></el-date-picker>
-            </el-form-item>-->
             <el-form-item>
               <el-button class="predict-btn" type="primary">提交</el-button>
             </el-form-item>
@@ -214,12 +211,8 @@ export default {
   top: 25px;
   left: -20px;
 }
-.inputs-section {
+.predict-form {
   margin-top: 40px;
-}
-.predict-btn {
-  margin-left: 40px;
-  width: 200px;
 }
 .predict-middle {
   flex-grow: 2;
