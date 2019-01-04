@@ -4,14 +4,27 @@
       <span class="predict-title">全市预测趋势</span>
       <div class="predict-left">
         <div class="inputs-section">
-          <el-form :model="analysisPredictForm">
+          <el-form :model="analysisPredictForm" size="mini" label-position="left">
             <el-form-item label="区域" prop="area">
-              <el-cascader expand-trigger="hover" :options="analysisOptions" v-model="analysisPredictForm.area"></el-cascader>
+              <el-cascader
+                expand-trigger="hover"
+                :options="analysisOptions"
+                v-model="analysisPredictForm.area"
+              ></el-cascader>
+            </el-form-item>
+            <el-form-item label="预测时间" prop="method">
+              <el-cascader
+                v-model="analysisPredictForm.method"
+                :options="timeMethodOptions"
+                expand-trigger="hover"
+              ></el-cascader>
             </el-form-item>
             <!-- <el-form-item label="日期" prop="date">
               <el-date-picker v-model="analysisPredictForm.date" type="daterange" range-separator="至" size="mini"></el-date-picker>
-            </el-form-item> -->
-            <el-form-item><el-button class="predict-btn" type="primary">提交</el-button></el-form-item>
+            </el-form-item>-->
+            <el-form-item>
+              <el-button class="predict-btn" type="primary">提交</el-button>
+            </el-form-item>
           </el-form>
         </div>
       </div>
@@ -38,13 +51,20 @@
           <el-form :model="analysisRelationForm">
             <el-form-item label="区域" prop="area">
               <el-select v-model="analysisRelationForm.area">
-                <el-option v-for="item in analysisRelationOptions" :key="item.label" :label="item.lebel" :value="item.value"></el-option>
+                <el-option
+                  v-for="item in analysisRelationOptions"
+                  :key="item.label"
+                  :label="item.lebel"
+                  :value="item.value"
+                ></el-option>
               </el-select>
             </el-form-item>
             <!-- <el-form-item label="日期" prop="date">
               <el-date-picker v-model="analysisPredictForm.date" type="daterange" range-separator="至" size="mini"></el-date-picker>
-            </el-form-item> -->
-            <el-form-item><el-button class="relation-btn" type="primary">提交</el-button></el-form-item>
+            </el-form-item>-->
+            <el-form-item>
+              <el-button class="relation-btn" type="primary">提交</el-button>
+            </el-form-item>
           </el-form>
         </div>
       </div>
@@ -79,11 +99,44 @@ export default {
     return {
       analysisPredictForm: {
         area: null,
-        date: null
+        date: null,
+        method: null
       },
       analysisRelationForm: {
         area: null
       },
+      timeMethodOptions: [
+        {
+          value: 'month',
+          label: '月'
+        },
+        {
+          value: 'session',
+          label: '季度',
+          children: [
+            {
+              label: '春季',
+              value: 'spring'
+            },
+            {
+              label: '夏季',
+              value: 'summer'
+            },
+            {
+              label: '秋季',
+              value: 'autumn'
+            },
+            {
+              label: '冬季',
+              value: 'winter'
+            }
+          ]
+        },
+        {
+          value: 'year',
+          label: '年度'
+        }
+      ],
       analysisRelationOptions: [
         {
           label: '成华区', value: 'chenghua'
