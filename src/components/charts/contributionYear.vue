@@ -1,46 +1,36 @@
 <template>
-  <div id="contributionDay">
-    <div class="daySelector">
-      <el-date-picker @change="changePieDay" v-model="daySelect" type="date"></el-date-picker>
+  <div id="contributionYear">
+    <div class="yearSelector">
+      <el-date-picker @change="changePieDay" v-model="pickedYear" type="year" size="mini"></el-date-picker>
     </div>
-    <div id="contriGraphday"></div>
+    <div id="contriGraphYear"></div>
   </div>
 </template>
 
 <script>
+import qs from 'qs'
 export default {
   data() {
     return {
-      dayPieGraphObj: null,
+      yearPieGraphObj: null,
       grapOptionsInit: null,
-      daySelect: this.dealDate(new Date())
+      pickedYear: null
     }
   },
   mounted() {
-    var now = new Date()
-    var nowStr = this.dealDate(now)
-    this.dayPieGraphObj = this.echarts.init(document.getElementById('contriGraphday'))
+    this.yearPieGraphObj = this.echarts.init(document.getElementById('contriGraphYear'))
     this.grapOptionsInit = {
       title: {
-        text: '随时间变化的影响因子',
+        text: '随年度变化的影响因子',
         left: 'center',
         top: 20,
-        subtext: nowStr
+        subtext: this.pickedYear
       },
 
       tooltip: {
         trigger: 'item',
         formatter: '{a} <br/>{b} : {c} ({d}%)'
       },
-
-      // visualMap: {
-      //   show: false,
-      //   min: 0,
-      //   max: 1,
-      //   inRange: {
-      //     colorLightness: [0, 1]
-      //   }
-      // },
       series: [
         {
           name: '访问来源',
@@ -77,7 +67,7 @@ export default {
           itemStyle: {
             normal: {
               color: '#f90',
-              shadowBlur: 200,
+              shadowBlur: 150,
               shadowColor: 'rgba(0, 0, 0, 0.7)'
             }
           },
@@ -90,44 +80,45 @@ export default {
         }
       ]
     }
-    this.dayPieGraphObj.setOption(this.grapOptionsInit)
+    this.yearPieGraphObj.setOption(this.grapOptionsInit)
   },
   methods: {
     changePieDay(pieRequest) {
       // 获取选取的时间点，发出请求，更新饼图
-      const currentOption = JSON.parse(JSON.stringify(this.grapOptionsInit))
-      currentOption.title.subtext = this.dealDate(pieRequest)
-      currentOption.series[0].data = [
-        { value: Math.floor(Math.random() * 100) / 100, name: '成华区' },
-        { value: Math.floor(Math.random() * 100) / 100, name: '双流区' },
-        { value: Math.floor(Math.random() * 100) / 100, name: '高新区' },
-        { value: Math.floor(Math.random() * 100) / 100, name: '武侯区' },
-        { value: Math.floor(Math.random() * 100) / 100, name: '青羊区' },
-        { value: Math.floor(Math.random() * 100) / 100, name: '金牛区' },
-        { value: Math.floor(Math.random() * 100) / 100, name: '天府新区' }
-      ].sort(function (a, b) { return a.value - b.value })
-      this.dayPieGraphObj.setOption(currentOption)
-    },
-    dealDate(date) {
-      return date.getFullYear() + '-' + this.addZero(date.getMonth() + 1) + '-' + this.addZero(date.getDate())
-    },
-    addZero(num) {
-      return num < 10 ? '0' + num : num
+      console.log(pieRequest)
+      /* 时间选择器的时间发生变化，发起请求，POST，携带时间戳
+      ** 返回数据的格式 {
+      **   data: data: [
+            { value: 0.079, name: '成华区' },
+            { value: 0.252, name: '双流区' },
+            { value: 0.07, name: '高新区' },
+            { value: 0.16, name: '武侯区' },
+            { value: 0.08, name: '青羊区' },
+            { value: 0.058, name: '金牛区' }
+          ]
+      ** }
+      */
+      this.$axios.post('http://localhost:3000/contribution/year/', qs.stringify({ date: pieRequest })).then(res => {
+        this.grapOptionsInit.series[0].data = res.data.data
+        this.yearPieGraphObj.setOption(this.grapOptionsInit)
+        this.pickedYear = new Date(pieRequest).getFullYear()
+      })
     }
   }
 }
 </script>
 
 <style>
-#contributionDay {
+#contributionYear {
+  margin: 20px 0 0 0;
   height: 100%;
   width: 100%;
 }
-#contriGraphday {
+#contriGraphYear {
   width: 100%;
   height: 100%;
 }
-.daySelector {
+.yearSelector {
   height: 50px;
   line-height: 40px;
   text-align: center;

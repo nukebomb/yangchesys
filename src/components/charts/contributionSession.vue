@@ -1,7 +1,7 @@
 <template>
   <div id="contributionSession">
     <div class="sessionSelector">
-      <el-cascader @change="changePieSession" :options="selectOptions" v-model="selectedInit"></el-cascader>
+      <el-cascader @change="changePieSession" size="mini" :options="selectOptions" v-model="selectedInit"></el-cascader>
     </div>
     <div id="contriGraph"></div>
   </div>
@@ -174,6 +174,7 @@ export default {
 
 <style>
 #contributionSession {
+  margin: 20px 0 0 0;
   width: 100%;
   height: 100%;
 }
@@ -181,7 +182,7 @@ export default {
   width: 100%;
   height: 100%;
 }
-.sessionSelector{
+.sessionSelector {
   height: 50px;
   line-height: 40px;
   text-align: center;

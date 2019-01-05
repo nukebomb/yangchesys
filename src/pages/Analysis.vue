@@ -1,7 +1,7 @@
 <template>
   <div class="analysis-container">
     <div class="analysis-predict-container">
-      <span class="predict-title">全市预测趋势</span>
+      <span class="predict-title">{{pickedArea}}预测趋势</span>
       <div class="predict-left">
         <div class="predict-form">
           <el-form
@@ -33,21 +33,24 @@
         </div>
       </div>
       <div class="predict-middle">
-        <span>全市随季节变化趋势预测</span>
+        <span>{{pickedArea}}随季节变化趋势预测</span>
         <all-predict ref="allPredict"></all-predict>
       </div>
       <div class="predict-right">
-        <span>全市随时间变化趋势预测</span>
+        <span>{{pickedArea}}随时间变化趋势预测</span>
         <week-predict ref="weekPredict"></week-predict>
       </div>
     </div>
     <div class="analysis-contribute-container">
       <span class="predict-title">区域排放贡献比重</span>
       <div class="contribute-left-container">
+        <contribution-year></contribution-year>
+      </div>
+      <div class="contribute-middle-container">
         <contribution-session></contribution-session>
       </div>
       <div class="contribute-right-container">
-        <contribution-day></contribution-day>
+        <contribution-month></contribution-month>
       </div>
     </div>
     <div class="analysis-relation-container">
@@ -85,7 +88,8 @@
 import allPredict from '../components/charts/allpredict'
 import weekPredict from '../components/charts/weekPredict'
 import contributionSession from '../components/charts/contributionSession'
-import contributionDay from '../components/charts/contributionDay'
+import contributionMonth from '../components/charts/contributionMonth'
+import contributionYear from '../components/charts/contributionYear'
 import relationDay from '../components/charts/relationDay'
 import relationSeasion from '../components/charts/relationSeasion'
 import qs from 'qs'
@@ -94,8 +98,9 @@ export default {
   components: {
     allPredict,
     weekPredict,
+    contributionYear,
     contributionSession,
-    contributionDay,
+    contributionMonth,
     relationDay,
     relationSeasion
   },
@@ -162,10 +167,34 @@ export default {
     }
   },
   methods: {
+    areaTransform(str) {
+      let Zh = null
+      switch (str) {
+        case 'allcity':
+          Zh = '全市'
+          break
+        case 'wuhou':
+          Zh = '武侯区'
+          break
+        case 'chenghua':
+          Zh = '成华区'
+          break
+        case 'gaoxin':
+          Zh = '高新区'
+          break
+        case 'shuangliu':
+          Zh = '双流区'
+          break
+        case 'jingniu':
+          Zh = '金牛区'
+          break
+      }
+      return Zh
+    },
     showPredict() {
       let area = this.analysisPredictForm.area[1] ? this.analysisPredictForm.area[1] : this.analysisPredictForm.area[0]
       let range = this.analysisPredictForm.range[0]
-      // console.log(this.analysisPredictForm)
+      // console.log(area)
       /* 发请求，POST，提交的选择的区域，返回当前区域，未来两年的数据（按季度），用于柱状体显示
       ** 返回的数据格式:
       ** {
@@ -178,6 +207,7 @@ export default {
       */
       this.$axios.post('http://localhost:3000/predict/bar', qs.stringify({ area: area })).then(res => {
         this.$refs.allPredict.drawAllPredict(res.data)
+        this.pickedArea = this.areaTransform(area)
       })
       /* POST，提交选择的区域和预测的时间，用于折线图显示
       ** 返回的数据格式:
@@ -186,6 +216,7 @@ export default {
       this.$axios.post('http://localhost:3000/predict/line', qs.stringify({area, range})).then(res => {
         // console.log(res)
         this.$refs.weekPredict.drawLinePredict(res.data)
+        this.pickedArea = this.areaTransform(area)
       })
     }
   }
@@ -234,7 +265,7 @@ export default {
 .predict-middle {
   flex-grow: 2;
   /* background-color: yellow; */
-  margin: 20px 10px 0 0;
+  margin: 20px 0 0 0;
 }
 .predict-middle > span {
   display: block;
@@ -244,7 +275,7 @@ export default {
 }
 .predict-right {
   flex-grow: 2;
-  margin: 20px 0 0 0;
+  margin: 20px 0 10px 0;
   /* background-color: yellow; */
 }
 .predict-right > span {
@@ -266,6 +297,13 @@ export default {
   position: relative;
 }
 .contribute-left-container {
+  height: 100%;
+  margin-right: 20px;
+  /* background-color: rgb(146, 127, 255); */
+  flex-basis: 300px;
+  flex-grow: 1;
+}
+.contribute-middle-container {
   height: 100%;
   margin-right: 20px;
   /* background-color: rgb(146, 127, 255); */

@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     drawLinePredict(data) {
-      console.log(data)
+      // console.log(data)
       this.linePredictOptions.xAxis = {
         type: 'category',
         data: data.category
@@ -51,5 +51,6 @@ export default {
 #weekPredictCon {
   width: 100%;
   height: 100%;
+  min-width: 250px;
 }
 </style>

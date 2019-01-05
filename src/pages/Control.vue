@@ -289,7 +289,6 @@
 import allPredict from '../components/charts/allpredict'
 import weekPredict from '../components/charts/weekPredict'
 import contributionSession from '../components/charts/contributionSession'
-import contributionDay from '../components/charts/contributionDay'
 import relationDay from '../components/charts/relationDay'
 import relationSeasion from '../components/charts/relationSeasion'
 
@@ -298,7 +297,6 @@ export default {
     allPredict,
     weekPredict,
     contributionSession,
-    contributionDay,
     relationDay,
     relationSeasion
   },
