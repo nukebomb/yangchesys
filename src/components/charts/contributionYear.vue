@@ -24,7 +24,7 @@ export default {
         text: '随年度变化的影响因子',
         left: 'center',
         top: 20,
-        subtext: this.pickedYear
+        subtext: null
       },
 
       tooltip: {
@@ -85,7 +85,7 @@ export default {
   methods: {
     changePieDay(pieRequest) {
       // 获取选取的时间点，发出请求，更新饼图
-      console.log(pieRequest)
+      console.log(pieRequest.getFullYear())
       /* 时间选择器的时间发生变化，发起请求，POST，携带时间戳
       ** 返回数据的格式 {
       **   data: data: [
@@ -99,9 +99,9 @@ export default {
       ** }
       */
       this.$axios.post('http://localhost:3000/contribution/year/', qs.stringify({ date: pieRequest })).then(res => {
+        this.grapOptionsInit.title.subtext = pieRequest.getFullYear() + '年度'
         this.grapOptionsInit.series[0].data = res.data.data
         this.yearPieGraphObj.setOption(this.grapOptionsInit)
-        this.pickedYear = new Date(pieRequest).getFullYear()
       })
     }
   }
