@@ -58,7 +58,7 @@ export default {
           itemStyle: {
             normal: {
               color: '#f90',
-              shadowBlur: 150,
+              shadowBlur: 100,
               shadowColor: 'rgba(0, 0, 0, 0.7)'
             }
           },

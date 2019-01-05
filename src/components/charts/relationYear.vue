@@ -1,9 +1,9 @@
 <template>
-  <div id="contributionMonth">
-    <div class="daySelector">
-      <el-date-picker @change="changePieDay" v-model="daySelect" type="month" size="mini"></el-date-picker>
+  <div id="relationYear">
+    <div class="yearSelector">
+      <el-date-picker @change="changePieDay" v-model="pickedYear" type="year" size="mini"></el-date-picker>
     </div>
-    <div id="contriGraphday"></div>
+    <div id="relationGraphYear"></div>
   </div>
 </template>
 
@@ -12,21 +12,20 @@ import qs from 'qs'
 export default {
   data() {
     return {
-      monthPieGraphObj: null,
+      yearPieGraphObj: null,
       grapOptionsInit: null,
-      daySelect: this.dealDate(new Date())
+      pickedYear: null
     }
   },
   mounted() {
-    this.monthPieGraphObj = this.echarts.init(document.getElementById('contriGraphday'))
+    this.yearPieGraphObj = this.echarts.init(document.getElementById('relationGraphYear'))
     this.grapOptionsInit = {
       title: {
-        text: '随月度变化的影响因子',
+        text: '随年度变化的影响因子',
         left: 'center',
         top: 20,
         subtext: null
       },
-
       tooltip: {
         trigger: 'item',
         formatter: '{a} <br/>{b} : {c} ({d}%)'
@@ -63,7 +62,6 @@ export default {
               shadowColor: 'rgba(0, 0, 0, 0.7)'
             }
           },
-
           animationType: 'scale',
           animationEasing: 'elasticOut',
           animationDelay: function (idx) {
@@ -75,7 +73,8 @@ export default {
   },
   methods: {
     changePieDay(pieRequest) {
-      // console.log(pieRequest)
+      // 获取选取的时间点，发出请求，更新饼图
+      console.log(pieRequest.getFullYear())
       /* 时间选择器的时间发生变化，发起请求，POST，携带时间戳
       ** 返回数据的格式 {
       **   data: data: [
@@ -88,33 +87,27 @@ export default {
           ]
       ** }
       */
-      this.$axios.post('http://localhost:3000/contribution/month/', qs.stringify({ date: pieRequest })).then(res => {
-        this.grapOptionsInit.title.subtext = this.dealDate(pieRequest)
+      this.$axios.post('http://localhost:3000/contribution/year/', qs.stringify({ date: pieRequest })).then(res => {
+        this.grapOptionsInit.title.subtext = pieRequest.getFullYear() + '年度'
         this.grapOptionsInit.series[0].data = res.data.data
-        this.monthPieGraphObj.setOption(this.grapOptionsInit)
+        this.yearPieGraphObj.setOption(this.grapOptionsInit)
       })
-    },
-    dealDate(date) {
-      return date.getFullYear() + '年' + this.addZero(date.getMonth() + 1) + '月'
-    },
-    addZero(num) {
-      return num < 10 ? '0' + num : num
     }
   }
 }
 </script>
 
 <style>
-#contributionMonth {
+#relationYear {
   margin: 20px 0 0 0;
   height: 100%;
   width: 100%;
 }
-#contriGraphday {
+#relationGraphYear {
   width: 100%;
   height: 100%;
 }
-.daySelector {
+.yearSelector {
   height: 50px;
   line-height: 40px;
   text-align: center;

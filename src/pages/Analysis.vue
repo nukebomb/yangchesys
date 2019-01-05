@@ -55,30 +55,35 @@
     </div>
     <div class="analysis-relation-container">
       <span class="predict-title">区域间关联性</span>
-      <div class="realtion-left">
+      <div class="relation-firstline">
         <div class="relation-inputs-section">
-          <el-form :model="analysisRelationForm">
+          <el-form :model="analysisRelationForm" size="mini" :inline="true">
             <el-form-item label="区域" prop="area">
-              <el-select v-model="analysisRelationForm.area">
+              <el-select v-model="analysisRelationForm.area" placeholder="请选择">
                 <el-option
                   v-for="item in analysisRelationOptions"
-                  :key="item.label"
-                  :label="item.lebel"
+                  :key="item.value"
+                  :label="item.label"
                   :value="item.value"
                 ></el-option>
               </el-select>
             </el-form-item>
             <el-form-item>
-              <el-button class="relation-btn" type="primary">提交</el-button>
+              <el-button type="primary" @click="changeRelationArea">提交</el-button>
             </el-form-item>
           </el-form>
         </div>
       </div>
-      <div class="relation-middle-container">
-        <relation-seasion></relation-seasion>
-      </div>
-      <div class="relation-right-container">
-        <relation-day></relation-day>
+      <div class="relation-secondline">
+        <div class="realtion-left">
+          <relation-year></relation-year>
+        </div>
+        <div class="relation-middle-container">
+          <relation-seasion></relation-seasion>
+        </div>
+        <div class="relation-right-container">
+          <relation-day></relation-day>
+        </div>
       </div>
     </div>
   </div>
@@ -92,6 +97,7 @@ import contributionMonth from '../components/charts/contributionMonth'
 import contributionYear from '../components/charts/contributionYear'
 import relationDay from '../components/charts/relationDay'
 import relationSeasion from '../components/charts/relationSeasion'
+import relationYear from '../components/charts/relationYear'
 import qs from 'qs'
 
 export default {
@@ -101,12 +107,14 @@ export default {
     contributionYear,
     contributionSession,
     contributionMonth,
+    relationYear,
     relationDay,
     relationSeasion
   },
   data() {
     return {
       pickedArea: '全市',
+      pickedRelationArea: null,
       analysisPredictForm: {
         area: null,
         range: null
@@ -213,11 +221,38 @@ export default {
       ** 返回的数据格式:
       **
       */
-      this.$axios.post('http://localhost:3000/predict/line', qs.stringify({area, range})).then(res => {
+      this.$axios.post('http://localhost:3000/predict/line', qs.stringify({ area, range })).then(res => {
         // console.log(res)
         this.$refs.weekPredict.drawLinePredict(res.data)
         this.pickedArea = this.areaTransform(area)
       })
+    },
+    changeRelationArea() {
+      if (!this.analysisRelationForm.area) {
+        this.$message({
+          showClose: true,
+          message: '选取了区域之后才能提交查看区域关系',
+          type: 'error'
+        })
+      } else if (this.analysisRelationForm.area === this.pickedRelationArea) {
+        this.$message({
+          showClose: true,
+          message: '区域选择没有变化，无效提交',
+          type: 'warning'
+        })
+      } else {
+        this.pickedRelationArea = this.analysisRelationForm.area // 记录当前选择的区域（区域关联性部分）
+        // 当前情况下，为正常提交情况，
+        /* 发情请求，POST，携带参数为选择的区域，返回的是在此区域下默认显示的随年度变化，季节变化，月份变化的关联性。
+        ** 其中默认显示的时间由后端确定（可以是最近时间的时间段）
+        ** 数据格式： {
+        **
+        ** }
+        */
+        this.$axios.post('http://localhost:3000/relation/init', qs.stringify({area: this.pickedRelationArea})).then(res => {
+
+        })
+      }
     }
   }
 }
@@ -321,29 +356,53 @@ export default {
 .analysis-relation-container {
   margin-top: 20px;
   width: 100%;
-  height: 500px;
+  height: 470px;
   border: 1px solid rgba(192, 191, 191, 0.3);
   background-color: #fff;
   padding: 20px;
   padding-top: 40px;
   position: relative;
+  /* display: flex; */
+}
+.relation-firstline {
+  width: 100%;
+  height: 20px;
+}
+.relation-secondline {
+  width: 100%;
   display: flex;
+  height: 300px;
+  margin-top: 10px;
+  justify-content: space-between;
+}
+.relation-firstline::after {
+  content: "";
+  height: 1px;
+  width: 100%;
+  background-color: rgba(192, 191, 191, 0.3);
+  position: absolute;
+  top: 100px;
+  left: 0;
 }
 .relation-inputs-section {
-  margin-top: 40px;
+  margin-top: 20px;
 }
 .relation-btn {
   margin-left: 40px;
   width: 200px;
 }
 .realtion-left {
-  width: 300px;
   margin: 0 20px 0 0;
+  flex-basis: 300px;
+  height: 100%;
 }
 .relation-middle-container {
-  flex-grow: 2;
+  margin-right: 20px;
+  flex-basis: 300px;
+  height: 100%;
 }
 .relation-right-container {
-  flex-grow: 2;
+  flex-basis: 300px;
+  height: 100%;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div id="relationDay">
     <div class="relationDaySelector">
-      <el-date-picker @change="changePieDay" v-model="daySelect" type="date"></el-date-picker>
+      <el-date-picker @change="changePieDay" v-model="daySelect" type="date" size="mini"></el-date-picker>
     </div>
     <div id="relationGraphday"></div>
   </div>
@@ -120,6 +120,7 @@ export default {
 
 <style>
 #relationDay {
+  margin: 20px 0 0 0;
   height: 100%;
   width: 100%;
 }

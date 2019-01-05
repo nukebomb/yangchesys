@@ -106,7 +106,7 @@ export default {
           itemStyle: {
             normal: {
               color: '#f90',
-              shadowBlur: 200,
+              shadowBlur: 100,
               shadowColor: 'rgba(0, 0, 0, 0.7)'
             }
           },
@@ -149,7 +149,7 @@ export default {
         case 'summer':
           result = '夏季'
           break
-        case 'atum':
+        case 'autumn':
           result = '秋季'
           break
         case 'winter':

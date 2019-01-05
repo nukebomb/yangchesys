@@ -1,7 +1,7 @@
 <template>
   <div id="relationSeasion">
     <div class="relationSessionSelector">
-      <el-cascader @change="changePieSession" :options="selectOptions" v-model="selectedInit"></el-cascader>
+      <el-cascader @change="changePieSession" :options="selectOptions" v-model="selectedInit" size="mini"></el-cascader>
     </div>
     <div id="relationSeasionGraph"></div>
   </div>
@@ -174,6 +174,7 @@ export default {
 
 <style>
 #relationSeasion {
+  margin: 20px 0 0 0;
   width: 100%;
   height: 100%;
 }
@@ -181,7 +182,7 @@ export default {
   width: 100%;
   height: 100%;
 }
-.relationSessionSelector{
+.relationSessionSelector {
   height: 50px;
   line-height: 40px;
   text-align: center;
