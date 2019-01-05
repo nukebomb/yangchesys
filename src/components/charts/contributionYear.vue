@@ -26,7 +26,6 @@ export default {
         top: 20,
         subtext: null
       },
-
       tooltip: {
         trigger: 'item',
         formatter: '{a} <br/>{b} : {c} ({d}%)'
@@ -37,15 +36,7 @@ export default {
           type: 'pie',
           radius: '55%',
           center: ['50%', '50%'],
-          data: [
-            { value: 0.079, name: '成华区' },
-            { value: 0.252, name: '双流区' },
-            { value: 0.07, name: '高新区' },
-            { value: 0.16, name: '武侯区' },
-            { value: 0.08, name: '青羊区' },
-            { value: 0.058, name: '金牛区' },
-            { value: 0.22, name: '天府新区' }
-          ].sort(function (a, b) { return a.value - b.value }),
+          data: null,
           roseType: 'radius',
           label: {
             normal: {
@@ -71,7 +62,6 @@ export default {
               shadowColor: 'rgba(0, 0, 0, 0.7)'
             }
           },
-
           animationType: 'scale',
           animationEasing: 'elasticOut',
           animationDelay: function (idx) {
@@ -80,7 +70,6 @@ export default {
         }
       ]
     }
-    this.yearPieGraphObj.setOption(this.grapOptionsInit)
   },
   methods: {
     changePieDay(pieRequest) {

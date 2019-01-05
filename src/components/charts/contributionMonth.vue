@@ -8,24 +8,23 @@
 </template>
 
 <script>
+import qs from 'qs'
 export default {
   data() {
     return {
-      dayPieGraphObj: null,
+      monthPieGraphObj: null,
       grapOptionsInit: null,
       daySelect: this.dealDate(new Date())
     }
   },
   mounted() {
-    var now = new Date()
-    var nowStr = this.dealDate(now)
-    this.dayPieGraphObj = this.echarts.init(document.getElementById('contriGraphday'))
+    this.monthPieGraphObj = this.echarts.init(document.getElementById('contriGraphday'))
     this.grapOptionsInit = {
       title: {
         text: '随月度变化的影响因子',
         left: 'center',
         top: 20,
-        subtext: nowStr
+        subtext: null
       },
 
       tooltip: {
@@ -38,15 +37,7 @@ export default {
           type: 'pie',
           radius: '55%',
           center: ['50%', '50%'],
-          data: [
-            { value: 0.079, name: '成华区' },
-            { value: 0.252, name: '双流区' },
-            { value: 0.07, name: '高新区' },
-            { value: 0.16, name: '武侯区' },
-            { value: 0.08, name: '青羊区' },
-            { value: 0.058, name: '金牛区' },
-            { value: 0.22, name: '天府新区' }
-          ].sort(function (a, b) { return a.value - b.value }),
+          data: null,
           roseType: 'radius',
           label: {
             normal: {
@@ -81,26 +72,30 @@ export default {
         }
       ]
     }
-    this.dayPieGraphObj.setOption(this.grapOptionsInit)
   },
   methods: {
     changePieDay(pieRequest) {
-      // 获取选取的时间点，发出请求，更新饼图
-      const currentOption = JSON.parse(JSON.stringify(this.grapOptionsInit))
-      currentOption.title.subtext = this.dealDate(pieRequest)
-      currentOption.series[0].data = [
-        { value: Math.floor(Math.random() * 100) / 100, name: '成华区' },
-        { value: Math.floor(Math.random() * 100) / 100, name: '双流区' },
-        { value: Math.floor(Math.random() * 100) / 100, name: '高新区' },
-        { value: Math.floor(Math.random() * 100) / 100, name: '武侯区' },
-        { value: Math.floor(Math.random() * 100) / 100, name: '青羊区' },
-        { value: Math.floor(Math.random() * 100) / 100, name: '金牛区' },
-        { value: Math.floor(Math.random() * 100) / 100, name: '天府新区' }
-      ].sort(function (a, b) { return a.value - b.value })
-      this.dayPieGraphObj.setOption(currentOption)
+      // console.log(pieRequest)
+      /* 时间选择器的时间发生变化，发起请求，POST，携带时间戳
+      ** 返回数据的格式 {
+      **   data: data: [
+            { value: 0.079, name: '成华区' },
+            { value: 0.252, name: '双流区' },
+            { value: 0.07, name: '高新区' },
+            { value: 0.16, name: '武侯区' },
+            { value: 0.08, name: '青羊区' },
+            { value: 0.058, name: '金牛区' }
+          ]
+      ** }
+      */
+      this.$axios.post('http://localhost:3000/contribution/month/', qs.stringify({ date: pieRequest })).then(res => {
+        this.grapOptionsInit.title.subtext = this.dealDate(pieRequest)
+        this.grapOptionsInit.series[0].data = res.data.data
+        this.monthPieGraphObj.setOption(this.grapOptionsInit)
+      })
     },
     dealDate(date) {
-      return date.getFullYear() + '-' + this.addZero(date.getMonth() + 1) + '-' + this.addZero(date.getDate())
+      return date.getFullYear() + '年' + this.addZero(date.getMonth() + 1) + '月'
     },
     addZero(num) {
       return num < 10 ? '0' + num : num
