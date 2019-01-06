@@ -76,13 +76,13 @@
       </div>
       <div class="relation-secondline">
         <div class="realtion-left">
-          <relation-year></relation-year>
+          <relation-year ref='relationYear'></relation-year>
         </div>
         <div class="relation-middle-container">
-          <relation-seasion></relation-seasion>
+          <relation-seasion ref="relationSession"></relation-seasion>
         </div>
         <div class="relation-right-container">
-          <relation-day></relation-day>
+          <relation-month ref="relationMonth"></relation-month>
         </div>
       </div>
     </div>
@@ -95,7 +95,7 @@ import weekPredict from '../components/charts/weekPredict'
 import contributionSession from '../components/charts/contributionSession'
 import contributionMonth from '../components/charts/contributionMonth'
 import contributionYear from '../components/charts/contributionYear'
-import relationDay from '../components/charts/relationDay'
+import relationMonth from '../components/charts/relationMonth'
 import relationSeasion from '../components/charts/relationSeasion'
 import relationYear from '../components/charts/relationYear'
 import qs from 'qs'
@@ -108,7 +108,7 @@ export default {
     contributionSession,
     contributionMonth,
     relationYear,
-    relationDay,
+    relationMonth,
     relationSeasion
   },
   data() {
@@ -241,16 +241,56 @@ export default {
           type: 'warning'
         })
       } else {
-        this.pickedRelationArea = this.analysisRelationForm.area // 记录当前选择的区域（区域关联性部分）
+        this.pickedRelationArea = this.analysisRelationForm.area // 记录当前选择的区域（区域关联性部分)
         // 当前情况下，为正常提交情况，
         /* 发情请求，POST，携带参数为选择的区域，返回的是在此区域下默认显示的随年度变化，季节变化，月份变化的关联性。
         ** 其中默认显示的时间由后端确定（可以是最近时间的时间段）
         ** 数据格式： {
-        **
+        **  year: {
+              date: '2018',
+              data: [
+                { value: 0.66, name: '成华区' },
+                {0.15, name: '双流区' },
+                {0.15, name: '高新区' },
+                {0.15, name: '武侯区' },
+                {0.15, name: '青羊区' },
+                {0.15, name: '金牛区' },
+                {0.15, name: '天府新区' }
+              ]
+            },
+            session: {
+              date: ['2018', 'spring'],
+              data: [
+                { value: 0.33, name: '成华区' },
+                {0.15, name: '双流区' },
+                {0.15, name: '高新区' },
+                {0.15, name: '武侯区' },
+                {0.15, name: '青羊区' },
+                {0.15, name: '金牛区' },
+                {0.15, name: '天府新区' }
+              ]
+            },
+            month: {
+              date: '2018-01',
+              data: [
+                { value: 0.33, name: '成华区' },
+                {0.15, name: '双流区' },
+                {0.15, name: '高新区' },
+                {0.15, name: '武侯区' },
+                {0.15, name: '青羊区' },
+                {0.15, name: '金牛区' },
+                {0.15, name: '天府新区' }
+              ]
+            }
         ** }
         */
-        this.$axios.post('http://localhost:3000/relation/init', qs.stringify({area: this.pickedRelationArea})).then(res => {
-
+        this.$axios.post('http://localhost:3000/relation/init', qs.stringify({ area: this.pickedRelationArea })).then(res => {
+          const year = res.data.year
+          const month = res.data.month
+          const session = res.data.session
+          this.$refs.relationYear.drawGraphYear(year)
+          this.$refs.relationSession.drawGraphSession(session)
+          this.$refs.relationMonth.drawGraphMonth(month)
         })
       }
     }
@@ -356,7 +396,7 @@ export default {
 .analysis-relation-container {
   margin-top: 20px;
   width: 100%;
-  height: 470px;
+  height: 500px;
   border: 1px solid rgba(192, 191, 191, 0.3);
   background-color: #fff;
   padding: 20px;
@@ -371,7 +411,7 @@ export default {
 .relation-secondline {
   width: 100%;
   display: flex;
-  height: 300px;
+  height: 350px;
   margin-top: 10px;
   justify-content: space-between;
 }
