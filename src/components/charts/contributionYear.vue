@@ -73,12 +73,13 @@ export default {
   },
   methods: {
     changePieDay(pieRequest) {
+      // 应需求变化，接口修改,需要返回对应区域的开工数量 2019-1-9
       // 获取选取的时间点，发出请求，更新饼图
-      console.log(pieRequest.getFullYear())
+      // console.log(pieRequest.getFullYear())
       /* 时间选择器的时间发生变化，发起请求，POST，携带时间戳
       ** 返回数据的格式 {
       **   data: data: [
-            { value: 0.079, name: '成华区' },
+            { value: 0.079, name: '成华区', 'workSite': 12 } **（改）,
             { value: 0.252, name: '双流区' },
             { value: 0.07, name: '高新区' },
             { value: 0.16, name: '武侯区' },
