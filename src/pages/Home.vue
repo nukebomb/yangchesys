@@ -65,7 +65,7 @@
         <div class="title">
           <span class="subtitle">{{currentArea}}监测点污染等级</span>
         </div>
-        <rank-table></rank-table>
+        <rank-table :dataForTable="homeForm"></rank-table>
       </div>
     </div>
   </div>
@@ -73,13 +73,12 @@
 
 <script>
 import mapArea from '../components/mapArea'
-import lineCharts from '../components/lineCharts'
 import rankTable from '../components/rankTable'
 import allLineChart from '../components/charts/allLineChart'
+import qs from 'qs'
 export default {
   components: {
     mapArea,
-    lineCharts,
     rankTable,
     allLineChart
   },
@@ -159,15 +158,21 @@ export default {
           // 1.请求，查询对应时间的区域的历史数据,精度月
           let area = !this.homeForm.area[1] ? this.homeForm.area[0] : this.homeForm.area[1]
           let date = this.homeForm.date
-          this.$axios.get('http://localhost:3000/home/search/' + area + '/' + JSON.stringify(date)).then(res => {
+          let postData = {
+            'area': area,
+            'date': this.homeForm.date
+          }
+          this.$axios.post('http://localhost:3000/home/search', qs.stringify(postData)).then(res => {
             let data = res.data
             this.currentArea = data.area
             // 调用子组件linechart的事件
             this.$refs.homeLineChart.grapmaker(data.data, data.category)
           })
 
-          // 2.地图的点位切换到对应的区域，对应的时间段，点位的信息。
-          this.$refs.homeMap.showPoints(area, JSON.stringify(date))
+          // 2.地图的点位切换到对应的区域，对应的时间段，点位的信息
+          this.$refs.homeMap.showPoints(area, this.homeForm.date)
+
+          // 3.表格切换到对应区域对应时间的数据，通过请求完成。
         } else {
           console.log('error submit')
           return false

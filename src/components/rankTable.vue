@@ -26,6 +26,7 @@
 import expandedLineChart from './charts/expandedLineChart'
 export default {
   name: 'rankTable',
+  props: ['dataForTable'],
   components: {
     expandedLineChart
   },
@@ -71,6 +72,13 @@ export default {
     }
   },
   methods: {
+    tableChangeData() {
+      // 发送请求，确定对应时间段对应区域的点位表格信息。
+      /* 数据格式：{
+      }
+      **
+      */
+    },
     tableRowClassName({ row, rowIndex }) {
       let level = this.polutionRank[rowIndex].level
       let result
