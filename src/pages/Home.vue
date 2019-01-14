@@ -176,9 +176,9 @@ export default {
 
           // 3.表格切换到对应区域对应时间的数据，通过请求完成。
           this.$axios.post('http://localhost:3000/home/postable', qs.stringify(postData)).then(res => {
-            console.log(res)
+            this.tableContext = res.data.data
+            console.log(res.data.data)
           })
-          // this.tableContext = polutionRank
         } else {
           console.log('error submit')
           return false
