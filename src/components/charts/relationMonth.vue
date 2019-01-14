@@ -78,7 +78,7 @@ export default {
     changePieMonth(pieRequest) {
       // 获取选取的时间点，发出请求，更新饼图
       console.log(pieRequest)
-      this.$axios.post('http://localhost:3000/relation/month/', qs.stringify({ date: pieRequest })).then(res => {
+      this.$axios.post('/dust/webresourcses/relation/month/', qs.stringify({ date: pieRequest })).then(res => {
         this.grapOptionsInit.title.subtext = this.dealDate(pieRequest)
         this.grapOptionsInit.series[0].data = res.data.data
         this.monthPieGraphObj.setOption(this.grapOptionsInit)

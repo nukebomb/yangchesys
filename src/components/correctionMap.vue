@@ -3,7 +3,7 @@ import { constants } from 'http2';
  * @Author: mikey.zhaopeng
  * @Date: 2018-12-12 11:05:56
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2019-01-04 11:25:57
+ * @Last Modified time: 2019-01-14 22:54:26
  * desciption:
  *  1.实现父组件点击相应区域，能够切换到只显示对应区域的点位信息，通过添加和移除标注点实现。
  */
@@ -142,7 +142,7 @@ export default {
     */
     this.initMap = this.drawMap()
     // 向后端请求： 返回所有点位信息
-    this.$axios.get('http://localhost:3000/map/init').then(res => {
+    this.$axios.get('/dust/webresourcses/map/init').then(res => {
       // console.log(res.data)
       // 点位属于哪个区现在是前端的模拟，随机生成的，设计以后端返回的数据中就带上点位属于哪个区，前端不做判断
       // let areas = ['双流区', '武侯区', '金牛区', '高新区']

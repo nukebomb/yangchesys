@@ -2,7 +2,7 @@
  * @Author: yang
  * @Date: 2018-12-23 14:18:18
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-12-24 20:40:47
+ * @Last Modified time: 2019-01-14 22:42:01
  * description: 此组件是用于综合查询页面的折线图组件
  * 初始页面时，默认加载的是全市按年度的历史数据（2015-2018）
  * 向父组件传drawGraph方法，通过此方法实现切换区域，对应的折线图相应变化。
@@ -35,7 +35,7 @@ export default {
   mounted() {
     this.historyGraph = this.echarts.init(document.getElementById('historyGraphcon'))
     // 页面初始化时，向后端请求： 2015-2018全市年度数据
-    this.$axios.get('http://localhost:3000/history/init').then((data) => {
+    this.$axios.get('/dust/webresourcses/database.dayavg/init').then((data) => {
       // console.log(data)
       const historyOption = {
         // title: {
@@ -79,7 +79,7 @@ export default {
     * return null
     */
     drawGraph(formdata) {
-      this.$axios.post('http://localhost:3000/history', qs.stringify(formdata)).then(data => {
+      this.$axios.post('/dust/webresourcses/database.dayavg', qs.stringify(formdata)).then(data => {
         /*
         * formdata: {
         *  area: string,所选区域

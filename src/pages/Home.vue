@@ -164,7 +164,7 @@ export default {
             'start': this.homeForm.date.startMonth,
             'end': this.homeForm.date.endMonth
           }
-          this.$axios.post('http://localhost:3000/home/search', qs.stringify(postData)).then(res => {
+          this.$axios.post('/dust/webresourcses/database.device/search', qs.stringify(postData)).then(res => {
             let data = res.data
             this.currentArea = data.area
             // 调用子组件linechart的事件
@@ -175,7 +175,7 @@ export default {
           this.$refs.homeMap.showPoints(area, this.homeForm.date)
 
           // 3.表格切换到对应区域对应时间的数据，通过请求完成。
-          this.$axios.post('http://localhost:3000/home/postable', qs.stringify(postData)).then(res => {
+          this.$axios.post('dust/webresourcses/database.device/postable', qs.stringify(postData)).then(res => {
             this.tableContext = res.data.data
             console.log(res.data.data)
           })
@@ -187,7 +187,7 @@ export default {
     }
   },
   mounted() {
-    this.$axios.get('http://localhost:3000/home/years').then(res => {
+    this.$axios.get('dust/webresourcses/database.device/years').then(res => {
       this.lineChartsData = res
     })
   }

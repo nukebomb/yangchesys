@@ -88,7 +88,7 @@ export default {
           ]
       ** }
       */
-      this.$axios.post('http://localhost:3000/contribution/month/', qs.stringify({ date: pieRequest })).then(res => {
+      this.$axios.post('/dust/webresourcses/contribution/month/', qs.stringify({ date: pieRequest })).then(res => {
         let dataAddLabel = null
         this.grapOptionsInit.title.subtext = this.dealDate(pieRequest)
         dataAddLabel = res.data.data

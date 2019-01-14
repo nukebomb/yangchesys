@@ -134,7 +134,7 @@ export default {
       ** }
       */
       console.log(pieRequest)
-      this.$axios.post('http://localhost:3000/contribution/session/', qs.stringify({ date: pieRequest })).then(res => {
+      this.$axios.post('/dust/webresourcses/contribution/session/', qs.stringify({ date: pieRequest })).then(res => {
         let dataAddLabel = null
 
         this.grapOptionsInit.title.subtext = pieRequest[0] + this.formatSession(pieRequest[1])

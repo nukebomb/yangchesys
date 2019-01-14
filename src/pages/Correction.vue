@@ -15,11 +15,12 @@
 </template>
 
 <script>
-import correctionDate from '../components/charts/correctionDate'
+// 此组件没有用，待删除
+// import correctionDate from '../components/charts/correctionDate'
 import correctionMap from '../components/correctionMap'
 export default {
   components: {
-    correctionDate,
+    // correctionDate,
     correctionMap
   },
   data() {

@@ -284,7 +284,7 @@ export default {
             }
         ** }
         */
-        this.$axios.post('http://localhost:3000/relation/init', qs.stringify({ area: this.pickedRelationArea })).then(res => {
+        this.$axios.post('/dust/webresourcses/relation/init', qs.stringify({ area: this.pickedRelationArea })).then(res => {
           const year = res.data.year
           const month = res.data.month
           const session = res.data.session

@@ -87,7 +87,7 @@ export default {
           ]
       ** }
       */
-      this.$axios.post('http://localhost:3000/relation/year/', qs.stringify({ date: pieRequest })).then(res => {
+      this.$axios.post('/dust/webresourcses/relation/year/', qs.stringify({ date: pieRequest })).then(res => {
         this.grapOptionsInit.title.subtext = pieRequest.getFullYear() + '年度'
         this.grapOptionsInit.series[0].data = res.data.data
         this.yearPieGraphObj.setOption(this.grapOptionsInit)

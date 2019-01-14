@@ -169,7 +169,7 @@ export default {
           ]
       ** }
       */
-      this.$axios.post('http://localhost:3000/relation/session/', qs.stringify({ date: pieRequest })).then(res => {
+      this.$axios.post('/dust/webresourcses/relation/session/', qs.stringify({ date: pieRequest })).then(res => {
         this.grapOptionsInit.title.subtext = pieRequest[0] + this.formatSession(pieRequest[1])
         this.grapOptionsInit.series[0].data = res.data.data
         this.sessionPieGraphObj.setOption(this.grapOptionsInit)

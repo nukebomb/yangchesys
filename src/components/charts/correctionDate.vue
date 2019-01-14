@@ -28,7 +28,7 @@ export default {
       //       method: 显示方式（月度，季度，年度）,
       //       date: 所选的时间段，String , "2018-12-31T16:00:00.000Z",只有选择月度的时候才有这个值
       //     }
-      this.$axios.post('http://localhost:3000/correction', qs.stringify(spotMessage)).then(data => {
+      this.$axios.post('/dust/webresourcses/correction', qs.stringify(spotMessage)).then(data => {
         this.correctPie.setOption({
           tooltip: {
             trigger: 'axis'
