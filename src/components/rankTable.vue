@@ -2,8 +2,8 @@
   <div>
     <el-table :data="contextForTable" size="mini" border>
       <!-- :row-class-name="tableRowClassName" -->
-      <el-table-column label="点位名称" prop="name"></el-table-column>
-      <el-table-column label="工程位置" prop="location"></el-table-column>
+      <el-table-column label="点位名称" prop="device_id"></el-table-column>
+      <el-table-column label="工程位置" prop="device_address"></el-table-column>
       <el-table-column label="污染等级" prop="level"></el-table-column>
       <!-- <el-table-column label="变化趋势" prop="trend"></el-table-column> -->
       <!-- <el-table-column type="expand">
