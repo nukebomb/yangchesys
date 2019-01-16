@@ -71,18 +71,21 @@
             <el-form-item>
               <el-button type="primary" @click="changeRelationArea">提交</el-button>
             </el-form-item>
+            <el-form-item label>
+              <span>当前区域：{{currentAreaCN}}</span>
+            </el-form-item>
           </el-form>
         </div>
       </div>
       <div class="relation-secondline">
         <div class="realtion-left">
-          <relation-year ref="relationYear"></relation-year>
+          <relation-year ref="relationYear" :selectedArea="pickedRelationArea"></relation-year>
         </div>
         <div class="relation-middle-container">
-          <relation-seasion ref="relationSession"></relation-seasion>
+          <relation-seasion ref="relationSession" :selectedArea="pickedRelationArea"></relation-seasion>
         </div>
         <div class="relation-right-container">
-          <relation-month ref="relationMonth"></relation-month>
+          <relation-month ref="relationMonth" :selectedArea="pickedRelationArea"></relation-month>
         </div>
       </div>
     </div>
@@ -98,7 +101,6 @@ import contributionYear from '../components/charts/contributionYear'
 import relationMonth from '../components/charts/relationMonth'
 import relationSeasion from '../components/charts/relationSeasion'
 import relationYear from '../components/charts/relationYear'
-import qs from 'qs'
 
 export default {
   components: {
@@ -138,15 +140,15 @@ export default {
       ],
       analysisRelationOptions: [
         {
-          label: '成华区', value: 'chenghua'
+          label: '成华区', value: 510108
         }, {
-          label: '武侯区', value: 'wuhou'
+          label: '武侯区', value: 510107
         }, {
-          label: '高新区', value: 'gaoxin'
+          label: '青羊区', value: 510105
         }, {
-          label: '双流区', value: 'shuangliu'
+          label: '锦江区', value: 510104
         }, {
-          label: '金牛区', value: 'jingniu'
+          label: '金牛区', value: 510106
         }
       ],
       analysisOptions: [
@@ -244,6 +246,7 @@ export default {
         this.pickedArea = this.areaTransform(area)
       })
       /* POST，提交选择的区域和预测的时间，用于折线图显示，修改为get
+      ** 判断选择的预测时间，然后分别请求三个接口
       ** 返回的数据格式:
       **
       */
@@ -301,11 +304,8 @@ export default {
           type: 'warning'
         })
       } else {
-        this.pickedRelationArea = this.analysisRelationForm.area // 记录当前选择的区域（区域关联性部分)
-        // 当前情况下，为正常提交情况，
-        /* 发情请求，POST，携带参数为选择的区域，返回的是在此区域下默认显示的随年度变化，季节变化，月份变化的关联性。
-        ** 其中默认显示的时间由后端确定（可以是最近时间的时间段）
-        ** 数据格式： {
+        this.pickedRelationArea = this.analysisRelationForm.area
+        /** 数据格式： {
         **  year: {
               date: '2018',
               data: [
@@ -344,15 +344,20 @@ export default {
             }
         ** }
         */
-        this.$axios.post('/dust/webresourcses/relation/init', qs.stringify({ area: this.pickedRelationArea })).then(res => {
-          const year = res.data.year
-          const month = res.data.month
-          const session = res.data.session
-          this.$refs.relationYear.drawGraphYear(year)
-          this.$refs.relationSession.drawGraphSession(session)
-          this.$refs.relationMonth.drawGraphMonth(month)
-        })
+        // this.$axios.post('/dust/webresourcses/relation/init', qs.stringify({ area: this.pickedRelationArea })).then(res => {
+        //   const year = res.data.year
+        //   const month = res.data.month
+        //   const session = res.data.session
+        //   this.$refs.relationYear.drawGraphYear(year)
+        //   this.$refs.relationSession.drawGraphSession(session)
+        //   this.$refs.relationMonth.drawGraphMonth(month)
+        // })
       }
+    }
+  },
+  computed: {
+    currentAreaCN: function () {
+      return this.$areaBelong(this.pickedRelationArea)
     }
   }
 }
